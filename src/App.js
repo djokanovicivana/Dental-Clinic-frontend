@@ -1,24 +1,23 @@
-import logo from './logo.svg';
+
 import './App.css';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from './pages/Home/Home';
+import Usluge from './pages/Usluge/Usluge';
+import PrikazUsluge from './pages/PrikazUsluge/PrikazUsluge';
+import Prijava from "./pages/Prijava/Prijava";
+import Registracija from './pages/Registracija/Registracija';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+   <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/usluge/:granaId/:nazivGrana" element={<Usluge/>}/>
+          <Route path="/usluga/:uslugaId" element={<PrikazUsluge/>}/>
+          <Route path="/prijava" element={<Prijava/>}/>
+          <Route path="/registracija" element={<Registracija/>}/>
+        </Routes>
+   </BrowserRouter>
   );
 }
 

@@ -1,0 +1,38 @@
+a:-webkit-any-link{
+    color:#caf0f8;
+}
+a:-webkit-any-link:hover {
+    color: #03045e;
+    cursor: pointer;
+}
+
+
+.navbar {
+    min-height: 12vh;
+    color: #caf0f8;
+    background: linear-gradient(to bottom, #0077b6, #00b4d8);
+    display: flex;
+    min-width: 100vw;
+}
+
+.logo {
+    margin-right: auto;
+    margin-left: 1vw;
+    margin-top: 4vh;
+    font-size: 25px;
+}
+
+.options {
+    margin-right: 1vw;
+    margin-top: 5vh;
+    font-size: 18px;
+}
+
+.options:hover {
+    color: #03045e;
+    cursor: pointer;
+}
+
+.a {
+    color: #caf0f8;
+}

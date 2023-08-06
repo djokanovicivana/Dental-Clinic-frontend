@@ -1,0 +1,25 @@
+/* DropDownMenu.module.css */
+.button {
+    margin-top: 0;
+}
+
+.menu {
+    /* Stilovi za prikazivanje menija */
+    /*background-color: #f1f1f1;*/
+    border: 1px solid #ccc;
+    padding: 8px;
+    list-style-type: none;
+    margin: 0;
+    min-width: 150px;
+}
+
+.menuItem {
+    /* Stilovi za stavke menija */
+    padding: 8px;
+    cursor: pointer;
+}
+
+.menuItem:hover {
+    /* Stilovi koji će se primeniti kad pređete mišem preko stavke menija */
+    background-color: #ddd;
+}

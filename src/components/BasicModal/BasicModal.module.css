@@ -1,0 +1,30 @@
+.box{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 500px;
+    min-height:500px;
+    background: linear-gradient(to bottom right, white, #caf0f8);  
+    border: none;
+    border-radius: 15px;
+    box-shadow: 3px 7px 16px 4px rgba(0, 0, 0, 0.75);
+        -webkit-box-shadow: 3px 7px 16px 4px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 3px 7px 16px 4px rgba(0, 0, 0, 0.75);
+    
+}
+.label{
+    margin-top:0;
+}
+.modal{
+    border:none;
+}
+.close{
+    color:#0077b6;
+    cursor: pointer;
+    margin-left:90%;
+    margin-top:20px;
+}
+.close:hover{
+    color:grey;
+}

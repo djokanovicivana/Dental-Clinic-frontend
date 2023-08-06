@@ -1,0 +1,24 @@
+
+ h1{
+    text-align: center;
+    color: #0077b6;
+
+}
+.usluga{
+    display:flex;
+    color:#0077b6;
+}
+.usluga p{
+    font-size: 18px;
+    margin-left:7vw;
+    margin-top:0;
+}
+.image{
+    min-width: 20vw;
+    min-height: 10vh;
+    border:black;
+}
+.image img{
+    width: 25vw;
+    height: 50vh;
+}

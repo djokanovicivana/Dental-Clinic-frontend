@@ -1,0 +1,16 @@
+.grid{
+   
+    margin-left:1vw;
+    display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+       
+        grid-gap: 1vw;
+    
+}
+.label{
+    color:#0077b6;
+    text-align: center;
+    font-size: 35px;
+   
+  
+}
