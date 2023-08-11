@@ -6,17 +6,49 @@ import Navbar from "../../components/navbar/Navbar";
 import { Link } from "react-router-dom";
 import DropDownMenu from "../../components/DropDownGrane/DropDownGrane";
 import { useForm } from 'react-hook-form';
-import { useState } from "react";
+import { Services } from "../../services/Services";
+import { TokenServices } from "../../services/TokenServices";
+import { toast, ToastContainer } from "react-toastify"; 
+import "react-toastify/dist/ReactToastify.css"; 
+import { useNavigate } from "react-router-dom";
+
 export default function Prijava(){
+  const navigate=useNavigate();
    const { register, handleSubmit, formState: { errors } } = useForm();
-   const [formData, setFormData] = useState({
-    korisnickoIme: "",
-    lozinka: "",
-  });
-   const onSubmit=(data)=>{
-     setFormData(data);
-     console.log(formData);
-   }
+  const onSubmit = async (data) => {
+    console.log(data);
+    try {
+      const response = await Services.login({'korisnickoIme': data.korisnickoIme, 'password': data.password});
+      console.log(response);
+      if (response && response.data.status) {
+        toast.success("Successfully logged in !", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        TokenServices.saveToken(response.data.token);
+        console.log(response.data.token);
+        const korisnikId=response.data.korisnikId;
+        const korisnikUloga=response.data.korisnikUloga;
+        if(korisnikUloga==='Administrator'){
+          navigate(`/admin/${korisnikId}`);
+        }else if(korisnikUloga==='Doktor'){
+          navigate(`/doktor/${korisnikId}`);
+        }else if(korisnikUloga==='Pacijent'){
+          navigate(`/pacijent/${korisnikId}`);
+        }else{
+          navigate(`/medSestra/${korisnikId}`);
+        }
+      } else {
+        toast.error("Error! Change your credentials !", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    } catch (error) {
+      console.log("🚀 ~ error", error);
+      toast.error("An error occurred. Please try again.", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+  };
     return(
         <>
      <Navbar 
@@ -25,6 +57,7 @@ export default function Prijava(){
     text3="Cenovnik" 
     text4={<Link to="/prijava">Prijavi se</Link>}
     text5={<Link to="/registracija">Registruj se</Link>}/>
+    <ToastContainer/>
   <div className={styles.parent}>
         <div className={styles.form}>
             <div className={styles.formItems}>
@@ -32,22 +65,24 @@ export default function Prijava(){
             <form onSubmit={handleSubmit(onSubmit)}>
             <div className={styles.item}>
                 <TextField
-                    id="outlined-basic"
+                    id="korisnickoIme"
                     label="Korisničko ime"
                     variant="outlined"
+                    name="korisnickoIme"
                     className={styles.field}
                     {...register('korisnickoIme', { required: true })}/>
                      {errors.korisnickoIme && <p className={styles.error}>Korisničko ime je obavezno.</p>}
             </div>
             <div className={styles.item}>
                 <TextField
-                id="outlined-basic"
+                    id="password"
+                    name="password"
                     label="Lozinka"
                     variant="outlined"
                     className={styles.field}
                     type="password"
-                {...register('lozinka',{required:true})} />
-                {errors.lozinka && <p className={styles.error}>Lozinka je obavezna!</p>}
+                {...register('password',{required:true})} />
+                {errors.password && <p className={styles.error}>Lozinka je obavezna!</p>}
                 
             </div>
             <ContainedButton text="POTVRDI" className={styles.field} type="submit" />

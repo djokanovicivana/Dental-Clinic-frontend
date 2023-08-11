@@ -6,15 +6,14 @@ import { TextField } from "@mui/material";
 import ContainedButton from "../../components/ContainedButton/ContainedButton";
 import styles from "./Registracija.module.css"
 import { useForm } from 'react-hook-form';
-import { useState } from "react";
+import { Services } from "../../services/Services";
 export default function Registracija(){
     const { register, handleSubmit, formState: { errors }} = useForm();
 
-    const [formData, setFormData]=useState({
-
-    })
-    const onSubmit=(data)=>{
+    const onSubmit=async(data)=>{
         console.log(data);
+        const response=await Services.register({'korisnickoIme':data.korisnickoIme,'password':data.password, 'password_confirmation':data.password_confirmation, 'email':data.email, 'ime':data.ime, 'prezime':data.prezime, 'brojTelefona':data.brojTelefona});
+        console.log(response);
     }
     return (
         <>
@@ -25,12 +24,13 @@ export default function Registracija(){
                 text4={<Link to="/prijava">Prijavi se</Link>}
                 text5={<Link to="/registracija">Registruj se</Link>} />
             <div>
-                    <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+                    <form onSubmit={handleSubmit(onSubmit)} className={styles.form}method="post">
                     <div className={styles.row1}>
                         <h1>Registruj se</h1>
                        <div className={styles.item}>
                             <TextField
-                                id="outlined-basic"
+                                id="ime"
+                                name="ime"
                                 label="Ime"
                                 variant="outlined"
                                 {...register('ime', {required:true})} />
@@ -38,7 +38,8 @@ export default function Registracija(){
                         </div>
                         <div className={styles.item}>
                             <TextField
-                                id="outlined-basic"
+                                id="prezime"
+                                name="prezime"
                                 label="Prezime"
                                 variant="outlined"
                                 {...register('prezime',{required:true})} />
@@ -46,16 +47,18 @@ export default function Registracija(){
                         </div>
                         <div className={styles.item}>
                             <TextField
-                                id="outlined-basic"
+                                id="brojTelefona"
+                                name="brojTelefona"
                                 label="Broj telefona"
                                 variant="outlined"
-                                {...register('telefon',{required:true})} />
-                                {errors.telefon && <p className={styles.error}>Polje je obavezno.</p>} 
+                                {...register('brojTelefona',{required:true})} />
+                                {errors.brojTelefona && <p className={styles.error}>Polje je obavezno.</p>} 
                         </div>
                         <div className={styles.item}>
                             <TextField
-                                id="outlined-basic"
+                                id="email"
                                 label="Email"
+                                name="email"
                                 variant="outlined"
                                 {...register('email',{required:true})} />
                                 {errors.email && <p className={styles.error}>Polje je obavezno.</p>} 
@@ -64,7 +67,8 @@ export default function Registracija(){
                     <div className={styles.row2}>
                         <div className={styles.item}>
                             <TextField
-                                id="outlined-basic"
+                                id="korisnickoIme"
+                                name="korisnickoIme"
                                 label="Korisničko ime"
                                 variant="outlined"
                                 {...register('korisnickoIme',{required:true})} />
@@ -72,19 +76,21 @@ export default function Registracija(){
                         </div>
                         <div className={styles.item}>
                             <TextField label="Lozinka" 
-                             id="outlined-basic"
+                             id="password"
+                             name="password"
                             variant="outlined"
                             type="password"
-                            {...register('lozinka',{required:true})} />
-                            {errors.lozinka && <p className={styles.error}>Polje je obavezno.</p>} 
+                            {...register('password',{required:true})} />
+                            {errors.password && <p className={styles.error}>Polje je obavezno.</p>} 
                         </div>
                          <div className={styles.item}>
                             <TextField label="Potvrdi lozinku" 
-                             id="outlined-basic"
+                             id="password_confirmation"
+                             name="password_confirmation"
                              variant="outlined"
                              type="password"
-                             {...register('potvrdaLozinke',{required:true})} />
-                            {errors.potvrdaLozinke && <p className={styles.error}>Polje je obavezno.</p>} 
+                             {...register('password_confirmation',{required:true})} />
+                            {errors.password_confirmation && <p className={styles.error}>Polje je obavezno.</p>} 
                         </div>
                         <ContainedButton text="POTVRDI" type="submit"/>
                     </div>
