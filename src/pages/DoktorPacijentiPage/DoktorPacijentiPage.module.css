@@ -1,0 +1,35 @@
+.item {
+background: rgba(255, 255, 255, 0.4);
+  font-size: 20px;
+  width: 50vw;
+  height: 10vh;
+  margin-left: 25vw;
+  color: #0077b6;
+  font-weight: bolder;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  box-shadow: 10px 10px 14px -1px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 10px 10px 14px -1px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 10px 10px 14px -1px rgba(0, 0, 0, 0.75);
+  margin-bottom: 3vh;
+}
+.text{
+    margin-left:2vw;
+}
+
+.button {
+  color: #0077b6;
+  text-align: center;
+background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 20px;
+  height: 7vh;
+  width: 5vw;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.buttonSpan {
+  margin-left: auto;
+}

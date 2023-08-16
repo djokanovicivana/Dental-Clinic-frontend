@@ -92,7 +92,7 @@ export default function Registracija(){
                              {...register('password_confirmation',{required:true})} />
                             {errors.password_confirmation && <p className={styles.error}>Polje je obavezno.</p>} 
                         </div>
-                        <ContainedButton text="POTVRDI" type="submit"/>
+                        <ContainedButton text="POTVRDI" type="submit" module={styles.button}/>
                     </div>
                     </form>     
                 </div>

@@ -14,7 +14,6 @@ export default function Usluge(){
     useEffect(() => {
       const fetchData = async () => {
       const data = await Services.getUslugeId(granaId);
-      console.log(data);
       setItems(data);
     };
     fetchData();

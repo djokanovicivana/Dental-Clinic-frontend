@@ -1,0 +1,44 @@
+.navbar{
+    z-index: 2;
+    position: fixed;
+}
+.info{
+    background: white;
+    border: none;
+    width:20vw;
+    height: 86vh;
+    box-shadow: 10px 10px 14px -1px rgba(0, 0, 0, 0.75);
+        -webkit-box-shadow: 10px 10px 14px -1px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 10px 10px 14px -1px rgba(0, 0, 0, 0.75);
+        z-index: 0;
+        color:#0077b6;
+        text-align: center;
+        font-size: 1.3rem;
+        font-weight: bolder;
+
+}
+.appointments{
+    background: linear-gradient(to left, #0077b6, #00b4d8);
+        opacity: 0.8;
+    width:80vw;
+    height: 60vh;
+    margin-top:14vh;
+    box-shadow: 10px 10px 14px -1px rgba(0, 0, 0, 0.75);
+        -webkit-box-shadow: 10px 10px 14px -1px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 10px 10px 14px -1px rgba(0, 0, 0, 0.75);
+        color:white;
+        font-size: 20px;
+        text-align: center;
+
+
+}
+.page{
+    width: 100vw;
+    display:flex;
+
+}
+.infoHeading{
+font-weight: bolder;
+color: #0077b6;
+font-size: 2.0em;
+}

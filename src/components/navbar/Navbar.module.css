@@ -13,6 +13,7 @@ a:-webkit-any-link:hover {
     background: linear-gradient(to bottom, #0077b6, #00b4d8);
     display: flex;
     min-width: 100vw;
+    z-index: 2;
 }
 
 .logo {

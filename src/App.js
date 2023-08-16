@@ -6,11 +6,12 @@ import PrikazUsluge from './pages/PrikazUsluge/PrikazUsluge';
 import Prijava from "./pages/Prijava/Prijava";
 import Registracija from './pages/Registracija/Registracija';
 import PrivateRoute from './PrivateRoute';
-import { TokenServices } from './services/TokenServices';
 import AdminPage from './pages/AdminPage/AdminPage';
 import DoktorPage from './pages/DoktorPage/DoktorPage';
 import PacijentPage from './pages/PacijentPage/PacijentPage';
 import MedSestraPage from './pages/MedSestraPage/MedSestraPage';
+import DoktorPacijentiPage from './pages/DoktorPacijentiPage/DoktorPacijentiPage';
+import PacijentInfoPage from './pages/PacijentInfoPage/PacijentInfoPage';
 
 function App() {
   return (
@@ -23,9 +24,12 @@ function App() {
           <Route path="/registracija" element={<Registracija/>}/>
           <Route element={<PrivateRoute/>}>
           <Route path="/admin/:korisnikId"  element={<AdminPage/>}/>
-          <Route path="doktor/:korisnikId"  element={<DoktorPage/>}/>
-          <Route path="pacijent/:korisnikId" element={<PacijentPage/>}/>
-          <Route path="medSestra/:korisnikId" element={<MedSestraPage/>}/>
+          <Route path="/doktor/:doktorId"  element={<DoktorPage/>}/>
+          <Route path="/pacijent/:korisnikId" element={<PacijentPage/>}/>
+          <Route path="/medSestra/:korisnikId" element={<MedSestraPage/>}/>
+          <Route path="/medSestra/:korisnikId" element={<MedSestraPage/>}/>
+          <Route path="/doktorPacijenti/:doktorId" element={<DoktorPacijentiPage/>}/>
+          <Route path="/pacijentInfo/:doktorId/:pacijentId" element={<PacijentInfoPage/>}/>
           </Route>
         </Routes>
    </BrowserRouter>

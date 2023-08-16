@@ -31,7 +31,9 @@ export default function Prijava(){
         if(korisnikUloga==='Administrator'){
           navigate(`/admin/${korisnikId}`);
         }else if(korisnikUloga==='Doktor'){
-          navigate(`/doktor/${korisnikId}`);
+          const doktorId=korisnikId;
+          console.log(doktorId);
+          navigate(`/doktor/${doktorId}`);
         }else if(korisnikUloga==='Pacijent'){
           navigate(`/pacijent/${korisnikId}`);
         }else{
@@ -85,7 +87,7 @@ export default function Prijava(){
                 {errors.password && <p className={styles.error}>Lozinka je obavezna!</p>}
                 
             </div>
-            <ContainedButton text="POTVRDI" className={styles.field} type="submit" />
+            <ContainedButton text="POTVRDI" module={styles.button} type="submit" />
             </form>
             <div className={styles.link}>
                         <p>Nemaš nalog? <Link style={{ color: '#00b4d8' }} to="/registracija">REGISTRUJ SE!</Link></p>

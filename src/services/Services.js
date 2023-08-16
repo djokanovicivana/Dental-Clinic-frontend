@@ -1,7 +1,8 @@
 import axios from "axios";
+const url="http://127.0.0.1:8000";
 const getAllGrana=async()=>{
        try {
-        const response = await axios.get("http://127.0.0.1:8000/home");
+        const response = await axios.get(`${url}/home`);
         return response.data;
     } catch (error) {
         console.log(
@@ -12,7 +13,7 @@ const getAllGrana=async()=>{
 }
 const getUslugeId=async(idGrana)=>{
     try{
-        const response=await axios.get(`http://127.0.0.1:8000/usluge/${idGrana}`);
+        const response=await axios.get(`${url}/usluge/${idGrana}`);
         console.log(response.data);
         return response.data;
     }
@@ -25,7 +26,7 @@ const getUslugeId=async(idGrana)=>{
 }
 const getUsluga=async(idUsluga)=>{
     try{
-        const response=await axios.get(`http://127.0.0.1:8000/usluga/${idUsluga}`);
+        const response=await axios.get(`${url}/usluga/${idUsluga}`);
         return response.data;
     }
      catch(error){
@@ -37,7 +38,7 @@ const getUsluga=async(idUsluga)=>{
 }
 const login = async ({ korisnickoIme, password }) => {
     try {
-        const response = await axios.post("http://127.0.0.1:8000/api/login", { korisnickoIme, password });
+        const response = await axios.post(`${url}/api/login`, { korisnickoIme, password });
 
         if (response.data.status === true) {
             return response;
@@ -52,7 +53,7 @@ const login = async ({ korisnickoIme, password }) => {
 };
 const register=async({korisnickoIme, password, password_confirmation,email,ime,prezime,brojTelefona})=>{
     try{
-    const response=await axios.post("http://127.0.0.1:8000/api/registracija", {korisnickoIme, password, password_confirmation,email,ime,prezime,brojTelefona});
+    const response=await axios.post(`${url}/api/registracija`, {korisnickoIme, password, password_confirmation,email,ime,prezime,brojTelefona});
     return response.data;
     } catch(error){
         console.log(
@@ -60,8 +61,55 @@ const register=async({korisnickoIme, password, password_confirmation,email,ime,p
             error
         );
     }
-
 }
+const getPacijentiDoktor=async(idKorisnik)=>{
+    try{
+    const response=await axios.get(`${url}/pacijenti/${idKorisnik}`);
+    return response.data;
+}catch(error){
+ console.log(
+            "🚀error",
+            error
+        );
+}
+}
+const getPacijentId=async(idPacijent)=>{
+    try{
+        const response=await axios.get(`${url}/pacijent/${idPacijent}`);
+        return response.data;
+    }
+    catch(error){
+         console.log(
+            "🚀error",
+            error
+        );
+    }
+}
+const getTerminiZavrseniPacijent=async(idPacijent)=>{
+    try{
+        const response=await axios.get(`${url}/terminiZavrseni/${idPacijent}`);
+        return response.data;
+    }
+    catch(error){
+         console.log(
+            "🚀error",
+            error
+        );
+    }
+}
+const getTerminiBuduciPacijent=async(idPacijent)=>{
+    try{
+        const response=await axios.get(`${url}/terminiBuduci/${idPacijent}`);
+        return response.data;
+    }
+    catch(error){
+         console.log(
+            "🚀error",
+            error
+        );
+    }
+}
+
 
 
 export const Services={
@@ -69,6 +117,10 @@ export const Services={
     getUslugeId,
     getUsluga, 
     login, 
-    register
+    register,
+    getPacijentiDoktor,
+    getPacijentId,
+    getTerminiZavrseniPacijent,
+    getTerminiBuduciPacijent
     
 };

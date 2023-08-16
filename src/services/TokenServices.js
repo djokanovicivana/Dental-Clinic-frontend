@@ -2,7 +2,7 @@ const saveToken=(token)=>{
     localStorage.setItem('token', token);
 }
 const getToken=()=>{
-    localStorage.getItem('token');
+    return localStorage.getItem('token');
 }
 export const TokenServices={
     saveToken,
