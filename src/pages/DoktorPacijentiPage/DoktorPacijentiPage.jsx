@@ -25,7 +25,7 @@ export default function DoktorPacijentiPage(){
     <Navbar 
            text2={<Link to={`/doktorPacijenti/${doktorId}`}>Pacijenti</Link>}
            text3={<Link to="/raspored">Raspored</Link>} 
-           text4={<Link to="/profil">Tvoj profil</Link>}
+           text4={<Link to={`/doktorProfil/${doktorId}`}>Tvoj profil</Link>}
            text5="Odjavi se"/>
            <h1>Svi pacijenti</h1>
     {pacijenti.map((pacijent,index)=>(

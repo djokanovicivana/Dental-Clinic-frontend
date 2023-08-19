@@ -12,6 +12,9 @@ import PacijentPage from './pages/PacijentPage/PacijentPage';
 import MedSestraPage from './pages/MedSestraPage/MedSestraPage';
 import DoktorPacijentiPage from './pages/DoktorPacijentiPage/DoktorPacijentiPage';
 import PacijentInfoPage from './pages/PacijentInfoPage/PacijentInfoPage';
+import PregledInfoPage from './pages/PregledInfoPage/PregledInfoPage';
+import NoviPregledPage from './pages/NoviPregledPage/NoviPregledPage';
+import DoktorProfilPage from './pages/DoktorProfilPage/DoktorProfilPage';
 
 function App() {
   return (
@@ -30,6 +33,9 @@ function App() {
           <Route path="/medSestra/:korisnikId" element={<MedSestraPage/>}/>
           <Route path="/doktorPacijenti/:doktorId" element={<DoktorPacijentiPage/>}/>
           <Route path="/pacijentInfo/:doktorId/:pacijentId" element={<PacijentInfoPage/>}/>
+          <Route path="/pregledInfo/:doktorId/:pregledId" element={<PregledInfoPage/>}/>
+          <Route path="/noviPregled/:doktorId/:pacijentId" element={<NoviPregledPage/>}/>
+          <Route path="/doktorProfil/:doktorId" element={<DoktorProfilPage/>}/>
           </Route>
         </Routes>
    </BrowserRouter>

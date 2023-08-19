@@ -85,9 +85,9 @@ const getPacijentId=async(idPacijent)=>{
         );
     }
 }
-const getTerminiZavrseniPacijent=async(idPacijent)=>{
+const getTerminiZavrseniPacijent=async(idPacijent,idDoktor)=>{
     try{
-        const response=await axios.get(`${url}/terminiZavrseni/${idPacijent}`);
+        const response=await axios.get(`${url}/terminiZavrseni/${idPacijent}/${idDoktor}`);
         return response.data;
     }
     catch(error){
@@ -97,9 +97,9 @@ const getTerminiZavrseniPacijent=async(idPacijent)=>{
         );
     }
 }
-const getTerminiBuduciPacijent=async(idPacijent)=>{
+const getTerminiBuduciPacijent=async(idPacijent,idDoktor)=>{
     try{
-        const response=await axios.get(`${url}/terminiBuduci/${idPacijent}`);
+        const response=await axios.get(`${url}/terminiBuduci/${idPacijent}/${idDoktor}`);
         return response.data;
     }
     catch(error){
@@ -109,6 +109,85 @@ const getTerminiBuduciPacijent=async(idPacijent)=>{
         );
     }
 }
+const getPregled=async(idPregled)=>{
+    try{
+        const response=await axios.get(`${url}/pregled/${idPregled}`);
+        return response.data;
+    }
+    catch(error){
+         console.log(
+            "🚀error",
+            error
+        );
+    }
+}
+const getTermin=async(idTermin)=>{
+    try{
+        const response=await axios.get(`${url}/termin/${idTermin}`);
+        return response.data;
+    }
+     catch(error){
+         console.log(
+            "🚀error",
+            error
+        );
+    }
+}
+const getTerminiZakazani=async(idDoktor,idPacijent)=>{
+    try{
+        const response=await axios.get(`${url}/terminiZakazani/${idDoktor}/${idPacijent}`);
+        return response.data;
+    }
+     catch(error){
+         console.log(
+            "🚀error",
+            error
+        );
+    }
+}
+const noviPregled=async({idKorisnikPacijent,idKorisnikDoktor,idTermin,idUsluga, anamneza,dijagnoza,lecenje})=>{
+    try{
+    const response=await axios.patch(`${url}/api/noviPregled/${idKorisnikPacijent}/${idKorisnikDoktor}/${idTermin}`,{idUsluga:idUsluga,
+         anamneza: anamneza,
+      dijagnoza: dijagnoza,
+      lecenje: lecenje});
+  if (response.status === 200) {
+      console.log('Pregled je uspešno ažuriran');
+      return true;
+    } else {
+      console.log('Došlo je do greške prilikom ažuriranja pregleda');
+      return false;
+    }
+  } catch (error) {
+    console.error('Greška prilikom slanja zahteva:', error);
+    return false;
+  }
+};
+const getUslugaZaDoktora=async(idDoktor)=>{
+    try{
+        const response=await axios.get(`${url}/uslugeDoktor/${idDoktor}`);
+        return response.data;
+    }
+     catch(error){
+         console.log(
+            "🚀error",
+            error
+        );
+    }
+}
+const getDoktor=async(idDoktor)=>{
+    try{
+        const response=await axios.get(`${url}/doktor/${idDoktor}`);
+        return response.data;
+    }
+      catch(error){
+         console.log(
+            "🚀error",
+            error
+        );
+    }
+}
+
 
 
 
@@ -121,6 +200,12 @@ export const Services={
     getPacijentiDoktor,
     getPacijentId,
     getTerminiZavrseniPacijent,
-    getTerminiBuduciPacijent
+    getTerminiBuduciPacijent,
+    getPregled,
+    getTermin,
+    getTerminiZakazani,
+    noviPregled,
+    getUslugaZaDoktora,
+    getDoktor
     
 };

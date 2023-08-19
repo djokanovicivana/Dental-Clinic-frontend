@@ -8,11 +8,15 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import "@fontsource/nunito"; 
-
-
+import { format } from "date-fns";
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import ContainedButton from "../../components/ContainedButton/ContainedButton";
+import AddIcon from '@mui/icons-material/Add';
 export default function PacijentInfoPage(){
     const { doktorId, pacijentId } = useParams();
     const [pacijent, setPacijent] = useState([]);
+    const [obavljeniPregledi, setObavljeniPregledi]=useState([]);
+    const [predstojeciPregledi, setPredstojeciPregledi]=useState([]);
     const [tabValue, setTabValue] = useState(0);
 
     const handleTabChange = (event, newValue) => {
@@ -21,9 +25,26 @@ export default function PacijentInfoPage(){
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await Services.getPacijentId(pacijentId);
+            const response = await Services.getPacijentId(pacijentId,doktorId);
             console.log(response);
             setPacijent(response);
+        };
+        fetchData();
+    }, [pacijentId]);
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await Services.getTerminiBuduciPacijent(pacijentId,doktorId);
+            setPredstojeciPregledi(response);
+            
+        };
+        fetchData();
+    }, [pacijentId]);
+        useEffect(() => {
+        const fetchData = async () => {
+            const response = await Services.getTerminiZavrseniPacijent(pacijentId,doktorId);
+            setObavljeniPregledi(response);
+            console.log(response);
+            
         };
         fetchData();
     }, [pacijentId]);
@@ -48,7 +69,7 @@ export default function PacijentInfoPage(){
             <Navbar 
                 text2={<Link to={`/doktorPacijenti/${doktorId}`}>Pacijenti</Link>}
                 text3={<Link to="/raspored">Raspored</Link>} 
-                text4={<Link to="/profil">Tvoj profil</Link>}
+                text4={<Link to={`/doktorProfil/${doktorId}`}>Tvoj profil</Link>}
                 text5="Odjavi se"
                 className={styles.navbar}
             />
@@ -61,30 +82,42 @@ export default function PacijentInfoPage(){
                         <p>Broj telefona: {item.brojTelefona}</p>
                         <p>Godište: {item.godiste}.</p>
                     </div>
-
                     <div className={styles.appointments}>
                         <ThemeProvider theme={theme}>
                             <Tabs value={tabValue} onChange={handleTabChange} variant="fullWidth" indicatorColor="primary" textColor="primary">
                                 <Tab label="Obavljeni pregledi" />
                                 <Tab label="Predstojeći pregledi" />
                             </Tabs>
-                            {tabValue === 0 && (
-                                /* Sadržaj za obavljene preglede */
+                            {tabValue === 0 && (   
                                 <div className={styles.tabContent}>
-                                    <p>18.05.2023. 17:45</p>
-                                    <p>18.05.2023. 17:45</p>
-                                    <p>18.05.2023. 17:45</p>
+                                    {obavljeniPregledi.map((item, index) => (
+    <p key={index}>
+        {format(new Date(item.datumTermina + ' ' + item.vremeTermina), 'dd.MM.yyyy HH:mm')}
+        <span><Link to={`/pregledInfo/${doktorId}/${item.idPregled}`}><MoreHorizIcon/></Link></span>
+    </p>
+))}                                
                                 </div>
                             )}
                             {tabValue === 1 && (
-                                /* Sadržaj za predstojeće preglede */
                                 <div className={styles.tabContent}>
-                                    {/* ... */}
+                                    {predstojeciPregledi.map((item, index) => (
+                                        <div>
+    <p key={index}>
+        {format(new Date(item.datumTermina + ' ' + item.vremeTermina), 'dd.MM.yyyy HH:mm')}
+    </p>
+    </div>
+   
+))}
                                 </div>
                             )}
+                            
                         </ThemeProvider>
+                        <Link to={`/noviPregled/${doktorId}/${pacijentId}`}>
+                         <ContainedButton text={<AddIcon/>} module={styles.add}/>
+                         </Link>
                     </div>
-                </div>
+                    </div>
+                    
             ))}
         </div>
     );

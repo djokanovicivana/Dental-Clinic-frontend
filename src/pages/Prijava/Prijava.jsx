@@ -19,7 +19,6 @@ export default function Prijava(){
     console.log(data);
     try {
       const response = await Services.login({'korisnickoIme': data.korisnickoIme, 'password': data.password});
-      console.log(response);
       if (response && response.data.status) {
         toast.success("Successfully logged in !", {
           position: toast.POSITION.TOP_RIGHT,
