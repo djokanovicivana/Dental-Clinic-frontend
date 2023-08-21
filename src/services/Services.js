@@ -187,6 +187,44 @@ const getDoktor=async(idDoktor)=>{
         );
     }
 }
+const izmeniPacijenta=async({ime,prezime,korisnickoIme,email,brojTelefona,godiste,old_password,new_password,new_password_confirmation})=>{
+    try{
+    const response=await axios.patch(`${url}/api/izmenaPacijenta/${korisnickoIme}`,{
+        ime:ime,
+        prezime:prezime,
+        korisnickoIme:korisnickoIme,
+        email:email,
+        brojTelefona:brojTelefona,
+        godiste:godiste,
+        old_password:old_password,
+        new_password:new_password,
+        new_password_confirmation:new_password_confirmation
+    });
+    return response.data;
+}
+catch(error){
+    console.log('error:',error);
+}}
+const izmeniDoktora=async({ime,prezime,korisnickoIme,email,brojTelefona, godiste,old_password,new_password,new_password_confirmation, nazivGrane, doktorId,})=>{
+    try{
+    const response=await axios.patch(`${url}/izmenaDoktora/${doktorId}`,{
+        ime:ime,
+        prezime:prezime,
+        korisnickoIme:korisnickoIme,
+        email:email,
+        brojTelefona:brojTelefona,
+        godiste:godiste,
+        old_password:old_password,
+        new_password:new_password,
+        new_password_confirmation:new_password_confirmation,
+        nazivGrane:nazivGrane
+    });
+    return response.data;
+}
+catch(error){
+    console.log('error:',error);
+}}
+
 
 
 
@@ -206,6 +244,9 @@ export const Services={
     getTerminiZakazani,
     noviPregled,
     getUslugaZaDoktora,
-    getDoktor
+    getDoktor,
+    izmeniPacijenta,
+    izmeniDoktora
+
     
 };
