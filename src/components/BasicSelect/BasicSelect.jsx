@@ -9,7 +9,7 @@ export default function BasicSelect(props) {
   const { label, data, value, onChange } = props;
 
   return (
-    <Box sx={{ maxWidth: 250 }}>
+    <Box sx={{ width: 300 }}>
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">{label}</InputLabel>
         <Select

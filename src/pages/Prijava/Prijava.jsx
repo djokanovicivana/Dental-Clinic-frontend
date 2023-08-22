@@ -20,7 +20,7 @@ export default function Prijava(){
     try {
       const response = await Services.login({'korisnickoIme': data.korisnickoIme, 'password': data.password});
       if (response && response.data.status) {
-        toast.success("Successfully logged in !", {
+        toast.success("Uspešna prijava!", {
           position: toast.POSITION.TOP_RIGHT,
         });
         TokenServices.saveToken(response.data.token);
@@ -35,14 +35,11 @@ export default function Prijava(){
           navigate(`/doktor/${doktorId}`);
         }else if(korisnikUloga==='Pacijent'){
           navigate(`/pacijent/${korisnikId}`);
-        }else{
-          navigate(`/medSestra/${korisnikId}`);
-        }
       } else {
-        toast.error("Error! Change your credentials !", {
+        toast.error("Uneti podaci su pogrešni.Pokušajte ponovo!", {
           position: toast.POSITION.TOP_RIGHT,
         });
-      }
+      }}
     } catch (error) {
       console.log("🚀 ~ error", error);
       toast.error("An error occurred. Please try again.", {

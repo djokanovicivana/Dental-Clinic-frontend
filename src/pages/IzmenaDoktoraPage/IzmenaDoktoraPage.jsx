@@ -2,65 +2,97 @@ import React from "react";
 import {useForm, Controller } from "react-hook-form";
 import { TextField } from "@mui/material";
 import ContainedButton from "../../components/ContainedButton/ContainedButton";
-import styles from "./IzmenaPacijentaPage.module.css";
+import styles from "./IzmenaDoktoraPage.module.css";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Services } from "../../services/Services";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../../components/navbar/Navbar";
 import { Link } from "react-router-dom";
-export default function IzmenaPacijentaPage(props){
-const {pacijentId}=useParams();
-const [pacijent,setPacijent]=useState({});
-const { register, handleSubmit,  formState: { errors }, reset } = useForm();
+import BasicSelect from "../../components/BasicSelect/BasicSelect";
+export default function IzmenaDoktoraPage(props){
+const navigate=useNavigate();
+const {doktorId}=useParams();
+const [doktor,setDoktor]=useState({});
+const[selectedGrana, setSelectedGrana]=useState({});
+const [grane,setGrane]=useState([]);
+const [slika, setSlika]=useState('');
+const { register, control, handleSubmit,  formState: { errors }, reset } = useForm();
 useEffect(()=>{
     const fetchData=async()=>{
-        const response=await Services.getPacijentId(pacijentId);
-        setPacijent(response[0]);
+        const response=await Services.getDoktor(doktorId);
+        setDoktor(response[0]);
+        console.log(response[0]);
+        console.log(response[0].nazivGrana);
+        if(response[0]){
+            const granaResponse=await Services.getAllGrana();
+            if(granaResponse){
+                 const graneOptions = granaResponse.map(grana => ({
+          value: `${grana.nazivGrana}`,
+          label: `${grana.nazivGrana}`,
+        }));
+        setGrane(graneOptions);
+        setSelectedGrana({value:`${response[0].nazivGrana}`, label: `${response[0].nazivGrana}`});
+            }
+
+            }
     };
     fetchData();
-},[pacijentId]);
+},[doktorId]);
+console.log(selectedGrana);
 useEffect(() => {
-    if (pacijent) {
+    if (doktor) {
         reset({
-            ime: pacijent.ime,
-            prezime: pacijent.prezime,
-            brojTelefona:pacijent.brojTelefona,
-            email:pacijent.email,
-            korisnickoIme:pacijent.korisnickoIme,
-            godiste:pacijent.godiste,
+            ime: doktor.ime,
+            prezime: doktor.prezime,
+            brojTelefona:doktor.brojTelefona,
+            email:doktor.email,
+            korisnickoIme:doktor.korisnickoIme,
+            godiste:doktor.godiste,
         });
     }
-}, [pacijent]); 
+}, [doktor]); 
 const onSubmit=async(data)=>{
-    const response=await Services.izmeniPacijenta(
-        {     'ime':data.ime,
-         'prezime':data.prezime,
-         'korisnickoIme':data.korisnickoIme,
-        'email':data.email,
+console.log(data.slika);
+console.log(doktor.slika);
+{data.slika.length>0 ? setSlika(data.slika[0].name) : setSlika(doktor.slika)}
+const response=await Services.izmeniDoktora({
+    'ime':data.ime,
+    'prezime':data.prezime,
+    'korisnickoIme':data.korisnickoIme,
+    'email':data.email,
     'brojTelefona':data.brojTelefona,
-'godiste':data.godiste,
-'old_password':data.old_password,
-'new_password':data.new_password,
-'new_password_confirmation':data.new_password_confirmation
+    'slika':slika,
+    'godiste':data.godiste,
+    'old_password':data.old_password,
+    'new_password':data.new_password,
+    'new_password_confirmation':data.new_password_confirmation,
+    'nazivGrana':data.nazivGrana,
+    
+});
+console.log(response);
+console.log(response.success);
+if(response.success===true){
+    if(props.uloga==='Doktor')
+    navigate(`/doktorProfil/${doktorId}`);
 }
-    );
-    console.log(response);
-    console.log(data,pacijentId);
+
 }
-console.log(pacijent.ime);
+const handleGranaChange=(event)=>{
+    setSelectedGrana(event.target.value);
+}
     return(<>
     {props.uloga==='Administrator' ? <Navbar text2="Zaposleni"
     text3="Pacijenti"
 text4="Tvoj profil"
 text5="Odjavi se"/> : <Navbar 
-           text2={<Link to={`/zakazivanje/${pacijentId}`}>Zakaži termin</Link>}
-           text3={<Link to={`/pacijentTermini/${pacijentId}`}>Tvoji termini</Link>} 
-           text4={<Link to={`/pacijentProfil/${pacijentId}`}>Tvoj profil</Link>}
+           text2={<Link to={`/doktorPacijenti/${doktorId}`}>Pacijenti</Link>}
+           text3={<Link to="/raspored">Raspored</Link>} 
+           text4={<Link to={`/doktorProfil/${doktorId}`}>Tvoj profil</Link>}
            text5="Odjavi se"/>}
            <div className={styles.box}>
             <h1 className={styles.heading}>Izmeni podatke:</h1>
-         {pacijent &&   <form onSubmit={handleSubmit(onSubmit)} method="PATCH" className={styles.form}>
+         {doktor &&   <form onSubmit={handleSubmit(onSubmit)} method="PATCH" className={styles.form}>
                 <div className={styles.row1}>
                     <div className={styles.item}>
                         <p className={styles.label}>Ime: </p>
@@ -112,6 +144,19 @@ text5="Odjavi se"/> : <Navbar
                                 className={styles.field}
                                 {...register('korisnickoIme')} />
                         </div>
+                        <div className={styles.item}>
+                            <p className={styles.label}>Profilna slika</p>
+               <TextField
+               sx={{maxWidth:223}}
+  label=""
+  accept="image/*"
+  type="file"
+  control={control}
+  name="slika"
+  {...register('slika')}
+/>
+
+      </div>
                         </div>
                         <div className={styles.row2}>
                 <div className={styles.item}>
@@ -136,6 +181,22 @@ text5="Odjavi se"/> : <Navbar
                 />
                 {errors.godiste && <p className={props.module.error}>{errors.godiste.message}</p>}
                 </div>
+                <div className={styles.item}>
+                <Controller
+          name="grana"
+          control={control}
+          render={({ field }) => (
+            <BasicSelect
+              label=""
+              value={selectedGrana}
+              data={grane}
+              onChange={handleGranaChange}
+              sx={{'width':300}}
+              {...field}
+            />
+          )}
+        />
+        </div>
           <div className={styles.item}>
                             <TextField label="Unesi staru lozinku" 
                              id="old_password"

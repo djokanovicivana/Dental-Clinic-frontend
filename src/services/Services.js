@@ -205,19 +205,21 @@ const izmeniPacijenta=async({ime,prezime,korisnickoIme,email,brojTelefona,godist
 catch(error){
     console.log('error:',error);
 }}
-const izmeniDoktora=async({ime,prezime,korisnickoIme,email,brojTelefona, godiste,old_password,new_password,new_password_confirmation, nazivGrane, doktorId,})=>{
+const izmeniDoktora=async({ime,prezime,korisnickoIme,email,brojTelefona, slika, godiste,old_password,new_password,new_password_confirmation, nazivGrana})=>{
     try{
-    const response=await axios.patch(`${url}/izmenaDoktora/${doktorId}`,{
+    const response=await axios.patch(`${url}/api/izmenaDoktora/${korisnickoIme}`,{
         ime:ime,
         prezime:prezime,
         korisnickoIme:korisnickoIme,
         email:email,
         brojTelefona:brojTelefona,
+        slika:slika,
         godiste:godiste,
         old_password:old_password,
         new_password:new_password,
         new_password_confirmation:new_password_confirmation,
-        nazivGrane:nazivGrane
+        nazivGrana:nazivGrana,
+        
     });
     return response.data;
 }
