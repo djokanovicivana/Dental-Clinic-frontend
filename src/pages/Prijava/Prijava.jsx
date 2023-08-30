@@ -16,36 +16,23 @@ export default function Prijava(){
   const navigate=useNavigate();
    const { register, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = async (data) => {
-    console.log(data);
-    try {
       const response = await Services.login({'korisnickoIme': data.korisnickoIme, 'password': data.password});
       if (response && response.data.status) {
-        toast.success("Uspešna prijava!", {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-        TokenServices.saveToken(response.data.token);
-        console.log(response.data.token);
-        const korisnikId=response.data.korisnikId;
+      TokenServices.cuvanjeSesije({'idKorisnika':response.data.korisnikId,
+      'uloga':response.data.korisnikUloga});
         const korisnikUloga=response.data.korisnikUloga;
         if(korisnikUloga==='Administrator'){
-          navigate(`/admin/${korisnikId}`);
+          navigate("/admin");
         }else if(korisnikUloga==='Doktor'){
-          const doktorId=korisnikId;
-          console.log(doktorId);
-          navigate(`/doktor/${doktorId}`);
+          navigate("/doktor");
         }else if(korisnikUloga==='Pacijent'){
-          navigate(`/pacijent/${korisnikId}`);
-      } else {
+          navigate("/pacijent");
+      }} else {
         toast.error("Uneti podaci su pogrešni.Pokušajte ponovo!", {
           position: toast.POSITION.TOP_RIGHT,
+          autoClose:1500
         });
-      }}
-    } catch (error) {
-      console.log("🚀 ~ error", error);
-      toast.error("An error occurred. Please try again.", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-    }
+      }
   };
     return(
         <>

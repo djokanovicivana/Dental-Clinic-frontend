@@ -44,7 +44,7 @@ const login = async ({ korisnickoIme, password }) => {
             return response;
         } else {
             console.log("Autentifikacija nije uspela:", response.data.message);
-            return null;
+            return response.data.message;
         }
     } catch (error) {
         console.error("Greška pri prijavljivanju:", error);
@@ -62,9 +62,9 @@ const register=async({korisnickoIme, password, password_confirmation,email,ime,p
         );
     }
 }
-const getPacijentiDoktor=async(idKorisnik)=>{
+const getPacijentiDoktor=async({idKorisnik,searchTerm})=>{
     try{
-    const response=await axios.get(`${url}/pacijenti/${idKorisnik}`);
+    const response=await axios.get(`${url}/pacijenti/${idKorisnik}?searchTerm=${searchTerm}`);
     return response.data;
 }catch(error){
  console.log(
@@ -226,6 +226,42 @@ const izmeniDoktora=async({ime,prezime,korisnickoIme,email,brojTelefona, slika, 
 catch(error){
     console.log('error:',error);
 }}
+const getUslugaIdTermina=async(idTermina)=>{
+    try{
+        const response=await axios.get(`${url}/uslugaTermin/${idTermina}`);
+        return response.data.nazivUsluga;
+    }
+    catch(error){
+        console.log('error',error);
+    }
+}
+const getTerminiZaDoktora=async(idDoktora)=>{
+    try{
+        const response=await axios.get(`${url}/terminiDoktor/${idDoktora}`);
+        return response.data;
+    }catch(error){
+        console.log('error:',error);
+    }
+}
+const getPregledTermin=async(idTermin)=>{
+    try{
+        const response=await axios.get(`${url}/pregledTermin/${idTermin}`);
+        return response.data;
+    }
+    catch(error){
+        console.log('error:',error);
+        return null;
+    }
+}
+const pretrazivanjeTermina=async({pocetniDatum,krajnjiDatum,pocetnoVreme,krajnjeVreme,doktor,usluga})=>{
+    try{
+        const response=await axios.get(`${url}/pretrazivanjeTerminina?pocetniDatum=${pocetniDatum}&krajnjiDatum=${krajnjiDatum}&pocetnoVreme=${pocetnoVreme}&krajnjeVreme=${krajnjeVreme}&doktor=${doktor}&usluga=${usluga}`);
+        return response.data;
+    }catch(error){
+        console.log('error:',error);
+        return null;
+    }
+}
 
 
 
@@ -248,7 +284,9 @@ export const Services={
     getUslugaZaDoktora,
     getDoktor,
     izmeniPacijenta,
-    izmeniDoktora
-
-    
+    izmeniDoktora,
+    getUslugaIdTermina,
+    getTerminiZaDoktora,
+    getPregledTermin,
+    pretrazivanjeTermina
 };

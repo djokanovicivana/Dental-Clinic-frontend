@@ -12,8 +12,10 @@ import { format } from "date-fns";
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import ContainedButton from "../../components/ContainedButton/ContainedButton";
 import AddIcon from '@mui/icons-material/Add';
+import { TokenServices } from "../../services/TokenServices";
 export default function PacijentInfoPage(){
-    const { doktorId, pacijentId } = useParams();
+    const doktorId=TokenServices.uzimanjeSesijeId();
+    const { pacijentId } = useParams();
     const [pacijent, setPacijent] = useState([]);
     const [obavljeniPregledi, setObavljeniPregledi]=useState([]);
     const [predstojeciPregledi, setPredstojeciPregledi]=useState([]);
@@ -67,12 +69,10 @@ export default function PacijentInfoPage(){
     return (
         <div>
             <Navbar 
-                text2={<Link to={`/doktorPacijenti/${doktorId}`}>Pacijenti</Link>}
-                text3={<Link to="/raspored">Raspored</Link>} 
-                text4={<Link to={`/doktorProfil/${doktorId}`}>Tvoj profil</Link>}
-                text5="Odjavi se"
-                className={styles.navbar}
-            />
+           text2={<Link to="/doktorPacijenti">Pacijenti</Link>}
+           text3={<Link to="/raspored">Raspored</Link>} 
+           text4={<Link to="/doktorProfil">Tvoj profil</Link>}
+           text5="Odjavi se"/>
             {pacijent.map((item, index) => (
                 <div className={styles.page} key={index}>
                     <div className={styles.info}>
@@ -112,7 +112,7 @@ export default function PacijentInfoPage(){
                             )}
                             
                         </ThemeProvider>
-                        <Link to={`/noviPregled/${doktorId}/${pacijentId}`}>
+                        <Link to={`/noviPregled/${pacijentId}`}>
                          <ContainedButton text={<AddIcon/>} module={styles.add}/>
                          </Link>
                     </div>

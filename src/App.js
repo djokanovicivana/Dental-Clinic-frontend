@@ -22,6 +22,7 @@ import IzmenaDoktoraPage from './pages/IzmenaDoktoraPage/IzmenaDoktoraPage';
 import SviPacijentiPage from './pages/SviPacijentiPage/SviPacijentiPage';
 import SviZaposleniPage from './pages/SviZaposleniPage/SviZaposleniPage';
 import AdminProfilPage from './pages/AdminProfilPage/AdminProfilPage';
+import Raspored from './components/Raspored/Raspored';
 function App() {
   return (
     <BrowserRouter>
@@ -32,20 +33,21 @@ function App() {
           <Route path="/prijava" element={<Prijava/>}/>
           <Route path="/registracija" element={<Registracija/>}/>
           <Route element={<PrivateRoute/>}>
-          <Route path="/admin/:adminId"  element={<AdminPage/>}/>
-          <Route path="/doktor/:doktorId"  element={<DoktorPage/>}/>
-          <Route path="/pacijent/:pacijentId" element={<PacijentPage/>}/>
-          <Route path="/doktorPacijenti/:doktorId" element={<DoktorPacijentiPage/>}/>
-          <Route path="/pacijentInfo/:doktorId/:pacijentId" element={<PacijentInfoPage/>}/>
+          <Route path="/admin"  element={<AdminPage/>}/>
+          <Route path="/doktor"  element={<DoktorPage/>}/>
+           <Route path="/raspored"  element={<Raspored/>}/>
+          <Route path="/pacijent" element={<PacijentPage/>}/>
+          <Route path="/doktorPacijenti" element={<DoktorPacijentiPage/>}/>
+          <Route path="/pacijentInfo/:pacijentId" element={<PacijentInfoPage/>}/>
           <Route path="/pregledInfo/:doktorId/:pregledId" element={<PregledInfoPage/>}/>
-          <Route path="/noviPregled/:doktorId/:pacijentId" element={<NoviPregledPage/>}/>
-          <Route path="/doktorProfil/:doktorId" element={<DoktorProfilPage/>}/>
-           <Route path="/adminProfil/:adminId" element={<AdminProfilPage/>}/>
+          <Route path="/noviPregled/:pacijentId" element={<NoviPregledPage/>}/>
+          <Route path="/doktorProfil" element={<DoktorProfilPage/>}/>
+           <Route path="/adminProfil" element={<AdminProfilPage/>}/>
            <Route path="/sviZaposleni" element={<SviZaposleniPage/>}/>
            <Route path="/sviPacijenti" element={<SviPacijentiPage/>}/>
-          <Route path="/pacijentProfil/:pacijentId" element={<PacijentProfilPage/>}/>
-          <Route path="/pacijentTermini/:pacijentId" element={<PacijentTerminiPage/>}/>
-          <Route path="/zakazivanje/:pacijentId" element={<ZakazivanjePage/>}/>
+          <Route path="/pacijentProfil" element={<PacijentProfilPage/>}/>
+          <Route path="/pacijentTermini" element={<PacijentTerminiPage/>}/>
+          <Route path="/zakazivanje" element={<ZakazivanjePage/>}/>
           <Route path="/izmenaPacijenta/:pacijentId" element={<IzmenaPacijentaPage uloga="Pacijent"/>}/>
            <Route path="/izmenaDoktora/:doktorId" element={<IzmenaDoktoraPage uloga="Doktor"/>}/>
 

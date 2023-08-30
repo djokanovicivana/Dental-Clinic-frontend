@@ -4,7 +4,7 @@ import { TokenServices } from "./services/TokenServices";
 
 export default function PrivateRoute({ element, ...props }){
       const location=useLocation();
-      const isAuthenticated=TokenServices.getToken();
+      const isAuthenticated=TokenServices.uzimanjeSesijeId();
       if(isAuthenticated){
         return(
             <Outlet/>

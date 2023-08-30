@@ -11,30 +11,37 @@ import { format } from "date-fns";
 import { Services } from "../../services/Services";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { TokenServices } from "../../services/TokenServices";
+import { useNavigate } from "react-router-dom";
 export default function NoviPregledPage() {
+  const navigate=useNavigate();
   const { control, register, handleSubmit, formState: { errors } } = useForm();
-  const { doktorId, pacijentId } = useParams();
+  const doktorId=TokenServices.uzimanjeSesijeId();
+  console.log(doktorId);
+  const { pacijentId } = useParams();
   const [pacijent, setPacijent] = useState([]);
   const [vreme, setVreme] = useState([]);
   const [selectedVreme, setSelectedVreme] = useState('');
   const [terminiResponse, setTerminiResponse] = useState([]); 
-
+  const [usluga,setUsluga]=useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       const pacijentResponse = await Services.getPacijentId(pacijentId);
       setPacijent(pacijentResponse[0]);
-
       const terminiResponse = await Services.getTerminiZakazani(doktorId, pacijentId);
       if (terminiResponse) {
         const vremeOptions = terminiResponse.map(termin => ({
           value: `${termin.datumTermina} ${termin.vremeTermina}`,
           label: format(new Date(`${termin.datumTermina} ${termin.vremeTermina}`), "dd.MM.yyyy HH:mm"),
         }));
+        console.log(terminiResponse);
         setVreme(vremeOptions);
         setTerminiResponse(terminiResponse);
+
+        
       }
+      
     };
 
     fetchData();
@@ -61,14 +68,25 @@ export default function NoviPregledPage() {
         'dijagnoza': data.dijagnoza,
         'lecenje': data.lecenje,
       });
-      console.log(response);
-      toast.success("Informacije o pregledu su uspešno sačuvane!");
+      if(response){
+       toast.success("Informacije o pregledu su uspešno sačuvane!", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose:1500
+        });
+        setTimeout((
+          navigate(`/pacijentInfo/${pacijentId}`)
+        ),2500);
     }
-  }
-
+    else{
+      toast.error("Informacije o pregledu su već unete!", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose:1500
+        });
+    }
+  }}
   const handleVremeChange = (event) => {
-    setSelectedVreme(event.target.value);
-  };
+  const selectedTerminValue = event.target.value;
+  setSelectedVreme(selectedTerminValue);}
   
   return (
     <>
@@ -84,22 +102,24 @@ export default function NoviPregledPage() {
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)} method="PATCH">
         <div className={styles.row1}>
         {pacijent && <p className={styles.name}>Pacijent: {pacijent.ime} {pacijent.prezime}</p>}
+        {usluga && <p className={styles.name}>Usluga: {usluga.nazivUsluga}</p>}
         <div className={styles.item}>
-        <Controller
-        className={styles.item}
-          name="termin"
-          control={control}
-          defaultValue={''}
-          render={({ field }) => (
-            <BasicSelect
-              label="Termin"
-              value={selectedVreme}
-              data={vreme}
-              onChange={handleVremeChange}
-              {...field}
-            />
-          )}
+    <Controller
+      name="termin"
+      control={control}
+      defaultValue={''}
+      render={({ field }) => (
+        <BasicSelect
+          label="Termin"
+          value={selectedVreme}
+          data={vreme}
+          onChange={(event) => {
+            handleVremeChange(event);
+            field.onChange(event);
+          }}
         />
+      )}
+    />
         {errors.termin && <p className={styles.error}>Termin je obavezan.</p>}
         </div>
         <div className={styles.item}>

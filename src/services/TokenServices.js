@@ -1,10 +1,37 @@
-const saveToken=(token)=>{
-    localStorage.setItem('token', token);
+const cuvanjeSesije = ({ idKorisnika, uloga }) => {
+    const data = {
+        idKorisnika: idKorisnika,
+        uloga: uloga
+    };
+
+    sessionStorage.setItem('userData', JSON.stringify(data));
 }
-const getToken=()=>{
-    return localStorage.getItem('token');
+const brisanjeSesije=()=>{
+    sessionStorage.clear();
+}
+const uzimanjeSesijeId = () => {
+    const storedData = sessionStorage.getItem('userData');
+
+    if (storedData) {
+        const userData = JSON.parse(storedData);
+        return userData.idKorisnika;
+    }
+
+    return null; 
+}
+const uzimanjeSesijeUloga = () => {
+    const storedData = sessionStorage.getItem('userData');
+
+    if (storedData) {
+        const userData = JSON.parse(storedData);
+        return userData.uloga;
+    }
+
+    return null; 
 }
 export const TokenServices={
-    saveToken,
-    getToken,
+    cuvanjeSesije,
+    brisanjeSesije,
+    uzimanjeSesijeId,
+    uzimanjeSesijeUloga
 }

@@ -1,14 +1,14 @@
 import React from "react";
 import Navbar from "../../components/navbar/Navbar";
 import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { Services } from "../../services/Services";
 import { useState } from "react";
 import Profil from "../../components/Profil/Profil";
 import styles from "./DoktorProfilPage.module.css";
+import { TokenServices } from "../../services/TokenServices";
 export default function DoktorProfilPage(){
-    const {doktorId}=useParams();
+    const doktorId=TokenServices.uzimanjeSesijeId();
     const [doktor,setDoktor]=useState([]);
     useEffect(()=>{
         const fetchData=async()=>{
@@ -21,12 +21,11 @@ export default function DoktorProfilPage(){
     console.log(doktorId);
     return(
         <>
-         <Navbar 
-                text2={<Link to={`/doktorPacijenti/${doktorId}`}>Pacijenti</Link>}
-                text3={<Link to="/raspored">Raspored</Link>} 
-                text4={<Link to={`/doktorProfil/${doktorId}`}>Tvoj profil</Link>}
-                text5="Odjavi se"
-                />
+           <Navbar 
+           text2={<Link to="/doktorPacijenti">Pacijenti</Link>}
+           text3={<Link to="/raspored">Raspored</Link>} 
+           text4={<Link to="/doktorProfil">Tvoj profil</Link>}
+           text5="Odjavi se"/>
                 {doktor[0]&& <Profil uloga="Doktor" ime={doktor[0].ime} prezime={doktor[0].prezime} slika={doktor[0].slika} nazivGrana={doktor[0].nazivGrana} godiste={doktor[0].godiste} brojTelefona={doktor[0].brojTelefona} korisnickoIme={doktor[0].korisnickoIme} email={doktor[0].email} 
                 module={styles}
                 link={`/izmenaDoktora/${doktorId}`}/>}
