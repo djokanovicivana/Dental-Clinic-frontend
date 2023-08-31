@@ -18,28 +18,34 @@ import { useState } from "react";
 import { useEffect } from "react";
 export default function ZakazivanjePage(){
     const pacijentId=TokenServices.uzimanjeSesijeId();
-    const {handleSubmit, control}=useForm();
+    const {register, handleSubmit, control}=useForm();
     const [usluge, setUsluge]=useState([]);
- 
-   const onSubmit = (data) => {
-   const formattedPocetniDatum=format(data.pocetniDatum.$d,"yyyy-MM-dd");
-   console.log(formattedPocetniDatum);
-   
-   const formattedPocetnoVreme=format(data.pocetnoVreme.$d,"HH:mm:ss");
-   console.log(formattedPocetnoVreme);
-   const formattedKrajnjeVreme=format(data.krajnjeVreme.$d,"HH:mm:ss");
-   console.log(formattedKrajnjeVreme);
-   console.log(data.krajnjiDatum);
-   const formattedKrajnjiDatum=format(data.krajnjiDatum.$d,"yyyy-MM-dd");
-   console.log(formattedKrajnjiDatum);
-   const formattedData={
-    'pocetniDatum':formattedPocetniDatum,
-    'krajnjiDatum':formattedKrajnjiDatum,
-    'pocetnoVreme':formattedPocetnoVreme,
-    'krajnjeVreme':formattedKrajnjeVreme,
-    'doktor':data.doktor,
-   }
+    useEffect(()=>{
+      const fetchData=async()=>{
+        const response=await Services.sveUsluge();
+        setUsluge(response);
+        console.log(response);
+      };
+      fetchData();
+    },[]);
+ console.log(usluge);
+const onSubmit = async (data) => {
+  const formattedPocetniDatum = data.pocetniDatum ? format(data.pocetniDatum.$d, "yyyy-MM-dd") : '';
+  const formattedPocetnoVreme = data.pocetnoVreme ? format(data.pocetnoVreme.$d, "HH:mm:ss") : '';
+  const formattedKrajnjeVreme = data.krajnjeVreme ? format(data.krajnjeVreme.$d, "HH:mm:ss") : '';
+  const formattedKrajnjiDatum = data.krajnjiDatum ? format(data.krajnjiDatum.$d, "yyyy-MM-dd") : '';
+  const formattedData = {
+    'pocetniDatum': formattedPocetniDatum,
+    'krajnjiDatum': formattedKrajnjiDatum,
+    'pocetnoVreme': formattedPocetnoVreme,
+    'krajnjeVreme': formattedKrajnjeVreme,
+    'doktor': data.doktor ? data.doktor : '',
+    'usluga':data.usluga ? data.usluga :'',
+  };
+
    console.log(formattedData);
+   const response=await Services.pretrazivanjeTermina(formattedData);
+   console.log(response);
 }
     return(
         <>
@@ -130,7 +136,9 @@ export default function ZakazivanjePage(){
             id="doktor"
             label="Doktor"
             variant="outlined"
-            name="doktor"/>
+            name="doktor"
+            {...register('doktor')}/>
+
             <Controller
               name="usluga"
               control={control}
@@ -144,8 +152,8 @@ export default function ZakazivanjePage(){
                   onChange={(e) => field.onChange(e.target.value)}
                 >
                   {usluge && usluge.map((usluga, index) => (
-                    <MenuItem key={index} value={usluga.ServiceName}>
-                      {usluga.ServiceName}
+                    <MenuItem key={index} value={usluga.nazivUsluga}>
+                      {usluga.nazivUsluga}
                     </MenuItem>
                   ))}
                 </Select>

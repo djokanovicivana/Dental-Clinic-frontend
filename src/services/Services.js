@@ -255,11 +255,19 @@ const getPregledTermin=async(idTermin)=>{
 }
 const pretrazivanjeTermina=async({pocetniDatum,krajnjiDatum,pocetnoVreme,krajnjeVreme,doktor,usluga})=>{
     try{
-        const response=await axios.get(`${url}/pretrazivanjeTerminina?pocetniDatum=${pocetniDatum}&krajnjiDatum=${krajnjiDatum}&pocetnoVreme=${pocetnoVreme}&krajnjeVreme=${krajnjeVreme}&doktor=${doktor}&usluga=${usluga}`);
+        const response=await axios.get(`${url}/pretrazivanjeTermina?pocetniDatum=${pocetniDatum}&krajnjiDatum=${krajnjiDatum}&pocetnoVreme=${pocetnoVreme}&krajnjeVreme=${krajnjeVreme}&doktor=${doktor}&usluga=${usluga}`);
         return response.data;
     }catch(error){
         console.log('error:',error);
         return null;
+    }
+}
+const sveUsluge=async()=>{
+    try{
+    const response=await axios.get(`${url}/sveUsluge`);
+    return response.data;}
+    catch(error){
+        console.log('error',error);
     }
 }
 
@@ -288,5 +296,6 @@ export const Services={
     getUslugaIdTermina,
     getTerminiZaDoktora,
     getPregledTermin,
-    pretrazivanjeTermina
+    pretrazivanjeTermina,
+    sveUsluge
 };
