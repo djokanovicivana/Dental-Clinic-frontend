@@ -20,15 +20,26 @@ export default function ZakazivanjePage(){
     const pacijentId=TokenServices.uzimanjeSesijeId();
     const {register, handleSubmit, control}=useForm();
     const [usluge, setUsluge]=useState([]);
+    const [doktori, setDoktori]=useState([]);
+    const [sviDoktori, setSviDoktori]=useState([]);
     useEffect(()=>{
       const fetchData=async()=>{
         const response=await Services.sveUsluge();
         setUsluge(response);
         console.log(response);
+        if(response){
+          const sviDoktoriResponse=await Services.pretrazivanjeTermina({'pocetniDatum':'',
+    'krajnjiDatum': '',
+    'pocetnoVreme': '',
+    'krajnjeVreme': '',
+    'doktor':'',
+    'usluga':''
+  });
+  setSviDoktori(sviDoktoriResponse);
+        }
       };
       fetchData();
     },[]);
- console.log(usluge);
 const onSubmit = async (data) => {
   const formattedPocetniDatum = data.pocetniDatum ? format(data.pocetniDatum.$d, "yyyy-MM-dd") : '';
   const formattedPocetnoVreme = data.pocetnoVreme ? format(data.pocetnoVreme.$d, "HH:mm:ss") : '';
@@ -45,8 +56,11 @@ const onSubmit = async (data) => {
 
    console.log(formattedData);
    const response=await Services.pretrazivanjeTermina(formattedData);
-   console.log(response);
+   setDoktori(response);
+   setSviDoktori([]);
 }
+console.log(sviDoktori);
+console.log(doktori);
     return(
         <>
          <Navbar 
@@ -54,7 +68,7 @@ const onSubmit = async (data) => {
            text3={<Link to="/pacijentTermini">Tvoji termini</Link>} 
            text4={<Link to="pacijentProfil">Tvoj profil</Link>}
            text5="Odjavi se"/>
-    <form method="get" onSubmit={handleSubmit(onSubmit)}>
+    <form method="get" onSubmit={handleSubmit(onSubmit)} className={styles.searchBar}>
              <Controller
         name="pocetniDatum"
         control={control}
@@ -64,7 +78,7 @@ const onSubmit = async (data) => {
             <p className={styles.label}>Izaberi početni datum:</p>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-              sx={{width:220}}
+              sx={{width:180, maxHeight:20}}
               disablePast  
               className={styles.picker}
                 value={field.value}
@@ -84,7 +98,7 @@ const onSubmit = async (data) => {
             <p className={styles.label}>Izaberi krajnji datum:</p>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-              sx={{width:220}}
+              sx={{width:180}}
               disablePast  
               className={styles.picker}
                 value={field.value}
@@ -104,6 +118,7 @@ const onSubmit = async (data) => {
             <p className={styles.label}>Izaberi početno vreme:</p>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <TimePicker
+              sx={{width:180}}
               className={styles.picker}
                 value={field.value}
                 onChange={(value) => field.onChange(value)}
@@ -123,6 +138,7 @@ const onSubmit = async (data) => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <TimePicker  
               className={styles.picker}
+              sx={{width:180}}
                 value={field.value}
                 onChange={(value) => field.onChange(value)}
                   disabledHours={(hour) => hour > 16 || hour < 9}
@@ -132,13 +148,16 @@ const onSubmit = async (data) => {
         )}
 
       />
+      <div className={styles.item}>
+      <p className={styles.label}>Izaberi doktora:</p>
       <TextField
             id="doktor"
-            label="Doktor"
+            sx={{width:180}}
+            label=""
             variant="outlined"
             name="doktor"
             {...register('doktor')}/>
-
+</div>
             <Controller
               name="usluga"
               control={control}
@@ -147,7 +166,7 @@ const onSubmit = async (data) => {
                <div className={styles.item}>
                 <p className={styles.label}>Izaberi uslugu:</p>
                 <Select
-                  sx={{width:226}}
+                sx={{width:180}}
                   value={field.value}
                   onChange={(e) => field.onChange(e.target.value)}
                 >
@@ -160,8 +179,36 @@ const onSubmit = async (data) => {
                 </div>  
             
               )}/>
-              <ContainedButton text={<SearchIcon/>} type="submit"/>
+              <ContainedButton text={<SearchIcon/>} type="submit" module={styles.button}/>
       </form>
+      <div className={styles.container}>
+      {doktori.length>0 ? (
+         doktori.map((doktor, index)=>(
+          <Link to={`/zakazivanjeRaspored/${JSON.stringify(doktor.termini)}/${doktor.ime}/${doktor.prezime}/${doktor.idKorisnik}/${doktor.slika}`}>
+                  <div key={index} className={styles.doktor}>
+                   <div className={styles.imageDiv}>
+                     <img className={styles.image} src={require(`../../images/${[doktor.slika]}`)}/>
+                     </div>
+                    <p>{doktor.ime} {doktor.prezime}</p>
+                    
+                  </div>
+                  </Link>
+         ))
+      ): sviDoktori.length > 0 ?  (
+       
+         sviDoktori.map((doktor, index)=>(
+          <Link to={`/zakazivanjeRaspored/${JSON.stringify(doktor.termini)}/${doktor.ime}/${doktor.prezime}/${doktor.idKorisnik}/${doktor.slika}`}>
+                  <div key={index} className={styles.doktor}>
+                    <div className={styles.imageDiv}>
+                     <img className={styles.image} src={require(`../../images/${[doktor.slika]}`)}/>
+                     </div>
+                    <p>{doktor.ime} {doktor.prezime}</p>
+                  </div>
+                  </Link>
+         ))
+      ): <h2 className={styles.error}>Nema termina koji zadovoljavaju tvoje kriterijume.</h2>
+      }
+      </div>
 
         </>
     )

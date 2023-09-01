@@ -270,6 +270,19 @@ const sveUsluge=async()=>{
         console.log('error',error);
     }
 }
+const zakaziPregled=async({idTermin, idKorisnikPacijent, idKorisnikDoktor, nazivUsluga})=>{
+    try{
+        const response=await axios.post(`${url}/api/zakaziPregled`,{
+            'idTermin':idTermin,
+            'idKorisnikPacijent':idKorisnikPacijent,
+            'idKorisnikDoktor':idKorisnikDoktor,
+            'nazivUsluga':nazivUsluga
+        });
+        return response.data;
+    }catch(error){
+        console.log('error:',error);
+    }
+}
 
 
 
@@ -297,5 +310,6 @@ export const Services={
     getTerminiZaDoktora,
     getPregledTermin,
     pretrazivanjeTermina,
-    sveUsluge
+    sveUsluge, 
+    zakaziPregled
 };

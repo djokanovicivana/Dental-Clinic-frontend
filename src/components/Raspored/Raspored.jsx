@@ -11,7 +11,6 @@ export default function Raspored() {
   const [datumi, setDatumi] = useState([]);
   const [sati, setSati] = useState([]);
   const [raspored, setRaspored] = useState([]);
-  const [pregledInfo, setPregledInfo] = useState(null);
   useEffect(() => {
     const fetchData = async () => {
       const response = await Services.getTerminiZaDoktora(doktorId);
