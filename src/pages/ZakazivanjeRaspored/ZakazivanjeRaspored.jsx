@@ -10,57 +10,82 @@ import AddIcon from '@mui/icons-material/Add';
 import ModalZakazivanje from "../../components/ModalZakazivanje/ModalZakazivanje";
 export default function ZakazivanjeRaspored(props) {
   const pacijentId=TokenServices.uzimanjeSesijeId();
-  const { data,ime,prezime,idKorisnik,slika } = useParams();
+ const { pocetniDatum, krajnjiDatum, pocetnoVreme, krajnjeVreme, doktor, usluga, index } = useParams();
+console.log(pocetniDatum);
+ console.log(index);
+ const [terminiResponse, setTerminiResponse]=useState(null);
   const [datumi, setDatumi] = useState([]);
   const [sati, setSati] = useState([]);
 const [raspored, setRaspored] = useState([]);
-console.log(data);
-useEffect(()=>{
-const terminiData = JSON.parse(data);
-const termini = terminiData.split(',');
+const [ime, setIme]=useState(null);
+const [prezime, setPrezime]=useState(null);
+const [idKorisnik, setIdKorisnik]=useState(null);
+useEffect(() => {
+  const fetchData = async () => {
+  const response = await Services.pretrazivanjeTermina({
+  'pocetniDatum': pocetniDatum==='null' ? '' : pocetniDatum,
+  'krajnjiDatum': krajnjiDatum==='null' ? '' :krajnjiDatum,
+  'pocetnoVreme': pocetnoVreme==='null' ?  '' : pocetnoVreme,
+  'krajnjeVreme': krajnjeVreme==='null' ? '' : krajnjeVreme,
+  'doktor': doktor ==='null' ? '' :doktor,
+  'usluga': usluga==='null' ? '' : usluga,
+});
 
-// Niz ID-ova
-const idNiz = termini.map(termin => termin.split(' ')[0]);
+    setTerminiResponse(response[0].termini);
+    setIme(response[0].ime);
+    setPrezime(response[0].prezime);
+    setIdKorisnik(response[0].idKorisnik);
+  };
+  fetchData();
+}, []);
 
-// Niz datuma
-const datumNiz = termini.map(termin => termin.split(' ')[1]);
+useEffect(() => {
+  if (terminiResponse) { // Dodajte proveru ovde
+    const termini = terminiResponse.split(',');
 
-// Niz vremena
-const vremeNiz = termini.map(termin => termin.split(' ')[2]);
+    // Niz ID-ova
+    const idNiz = termini.map(termin => termin.split(' ')[0]);
 
-const zakazaniNiz = termini.map(termin => termin.split(' ')[3]);
+    // Niz datuma
+    const datumNiz = termini.map(termin => termin.split(' ')[1]);
 
-console.log('ID niz:', idNiz);
-console.log('Datum niz:', datumNiz);
-console.log('Vreme niz:', vremeNiz);
-console.log('Zakazani niz:',zakazaniNiz);
+    // Niz vremena
+    const vremeNiz = termini.map(termin => termin.split(' ')[2]);
 
+    const zakazaniNiz = termini.map(termin => termin.split(' ')[3]);
 
-const uniqueDatumi = [...new Set(datumNiz)].sort(); // Koristimo Set za jedinstvene datume
-setDatumi(uniqueDatumi);
+    console.log('ID niz:', idNiz);
+    console.log('Datum niz:', datumNiz);
+    console.log('Vreme niz:', vremeNiz);
+    console.log('Zakazani niz:', zakazaniNiz);
 
-const uniqueSati = [...new Set(vremeNiz)].sort(); // Koristimo Set za jedinstvene sate
-setSati(uniqueSati);
+    const uniqueDatumi = [...new Set(datumNiz)].sort(); // Koristimo Set za jedinstvene datume
+    setDatumi(uniqueDatumi);
 
-const newRaspored = [];
-for (const datum of uniqueDatumi) {
-  const row = [];
-  for (const vreme of uniqueSati) {
-    const foundIndex = datumNiz.findIndex((datumTermina, index) => datumTermina === datum && vremeNiz[index] === vreme);
+    const uniqueSati = [...new Set(vremeNiz)].sort(); // Koristimo Set za jedinstvene sate
+    setSati(uniqueSati);
 
-    if (foundIndex !== -1) {
-      row.push({
-        status: zakazaniNiz[foundIndex]==='1' ? "Zakazan" : "Slobodan",
-        idTermin: idNiz[foundIndex]
-      });
-    } else {
-      row.push("");
+    const newRaspored = [];
+    for (const datum of uniqueDatumi) {
+      const row = [];
+      for (const vreme of uniqueSati) {
+        const foundIndex = datumNiz.findIndex((datumTermina, index) => datumTermina === datum && vremeNiz[index] === vreme);
+
+        if (foundIndex !== -1) {
+          row.push({
+            status: zakazaniNiz[foundIndex] === '1' ? "Zakazan" : "Slobodan",
+            idTermin: idNiz[foundIndex]
+          });
+        } else {
+          row.push("");
+        }
+      }
+      newRaspored.push(row)
     }
+    setRaspored(newRaspored);
   }
-  newRaspored.push(row)
-  setRaspored(newRaspored);
-}},[data]);
-console.log(raspored);
+}, [terminiResponse]); 
+
 
 
 const tabelaStil = {

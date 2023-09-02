@@ -22,6 +22,11 @@ export default function ZakazivanjePage(){
     const [usluge, setUsluge]=useState([]);
     const [doktori, setDoktori]=useState([]);
     const [sviDoktori, setSviDoktori]=useState([]);
+    const [formattedPocetniDatum, setFormattedPocetniDatum]=useState(null);
+    const [formattedKrajnjiDatum, setFormattedKrajnjiDatum]=useState(null);
+    const [formattedPocetnoVreme, setFormattedPocetnoVreme]=useState(null);
+    const [formattedKrajnjeVreme, setFormattedKrajnjeVreme]=useState(null);
+    const [formattedData, setFormattedData]=useState(null);
     useEffect(()=>{
       const fetchData=async()=>{
         const response=await Services.sveUsluge();
@@ -42,9 +47,13 @@ export default function ZakazivanjePage(){
     },[]);
 const onSubmit = async (data) => {
   const formattedPocetniDatum = data.pocetniDatum ? format(data.pocetniDatum.$d, "yyyy-MM-dd") : '';
+  setFormattedPocetniDatum(formattedPocetniDatum);
   const formattedPocetnoVreme = data.pocetnoVreme ? format(data.pocetnoVreme.$d, "HH:mm:ss") : '';
+  setFormattedPocetnoVreme(formattedPocetnoVreme);
   const formattedKrajnjeVreme = data.krajnjeVreme ? format(data.krajnjeVreme.$d, "HH:mm:ss") : '';
+  setFormattedKrajnjeVreme(formattedKrajnjeVreme);
   const formattedKrajnjiDatum = data.krajnjiDatum ? format(data.krajnjiDatum.$d, "yyyy-MM-dd") : '';
+  setFormattedKrajnjiDatum(formattedKrajnjiDatum);
   const formattedData = {
     'pocetniDatum': formattedPocetniDatum,
     'krajnjiDatum': formattedKrajnjiDatum,
@@ -53,7 +62,7 @@ const onSubmit = async (data) => {
     'doktor': data.doktor ? data.doktor : '',
     'usluga':data.usluga ? data.usluga :'',
   };
-
+   setFormattedData(formattedData);
    console.log(formattedData);
    const response=await Services.pretrazivanjeTermina(formattedData);
    setDoktori(response);
@@ -184,7 +193,8 @@ console.log(doktori);
       <div className={styles.container}>
       {doktori.length>0 ? (
          doktori.map((doktor, index)=>(
-          <Link to={`/zakazivanjeRaspored/${JSON.stringify(doktor.termini)}/${doktor.ime}/${doktor.prezime}/${doktor.idKorisnik}/${doktor.slika}`}>
+           <Link to={`/zakazivanjeRaspored/${formattedPocetniDatum || null}/${formattedKrajnjiDatum || null}/${formattedPocetnoVreme || null}/${formattedKrajnjeVreme || null}/${formattedData && formattedData.doktor || null}/${formattedData && formattedData.usluga || null}/${index}`}>
+
                   <div key={index} className={styles.doktor}>
                    <div className={styles.imageDiv}>
                      <img className={styles.image} src={require(`../../images/${[doktor.slika]}`)}/>
@@ -197,7 +207,9 @@ console.log(doktori);
       ): sviDoktori.length > 0 ?  (
        
          sviDoktori.map((doktor, index)=>(
-          <Link to={`/zakazivanjeRaspored/${JSON.stringify(doktor.termini)}/${doktor.ime}/${doktor.prezime}/${doktor.idKorisnik}/${doktor.slika}`}>
+          <Link to={`/zakazivanjeRaspored/${formattedPocetniDatum || null}/${formattedKrajnjiDatum || null}/${formattedPocetnoVreme || null}/${formattedKrajnjeVreme || null}/${formattedData && formattedData.doktor || null}/${formattedData && formattedData.usluga || null}/${index}`}>
+
+
                   <div key={index} className={styles.doktor}>
                     <div className={styles.imageDiv}>
                      <img className={styles.image} src={require(`../../images/${[doktor.slika]}`)}/>

@@ -51,7 +51,7 @@ function App() {
           <Route path="/zakazivanje" element={<ZakazivanjePage/>}/>
           <Route path="/izmenaPacijenta/:pacijentId" element={<IzmenaPacijentaPage uloga="Pacijent"/>}/>
            <Route path="/izmenaDoktora/:doktorId" element={<IzmenaDoktoraPage uloga="Doktor"/>}/>
-           <Route path="/zakazivanjeRaspored/:data/:ime/:prezime/:idKorisnik/:slika" element={<ZakazivanjeRaspored/>}/>
+           <Route path="/zakazivanjeRaspored/:pocetniDatum/:krajnjiDatum/:pocetnoVreme/:krajnjeVreme/:doktor/:usluga/:index" element={<ZakazivanjeRaspored/>}/>
 
           </Route>
         </Routes>

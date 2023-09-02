@@ -27,6 +27,7 @@ const [usluge, setUsluge]=useState([]);
     fetchData();
   },[props.doktorId]);
   const onSubmit=async(data)=>{
+    console.log(data);
     const response=await Services.zakaziPregled({'idTermin':props.idTermin,
     'idKorisnikPacijent':pacijentId,
     'idKorisnikDoktor':props.doktorId,
@@ -37,17 +38,17 @@ const [usluge, setUsluge]=useState([]);
   return(
     <>
     <ToastContainer/>
-      <p className={styles.label} onClick={handleOpen}>{props.label}</p>
+      <p onClick={handleOpen}>{props.label}</p>
       <Modal 
         open={open}
         onClose={handleClose}
       >
     <Box className={styles.box}>
           <CloseIcon onClick={handleClose} className={styles.close} variant="large"/>
-          <h1>Detalji pregleda:</h1>
-          <p>Doktor: {props.doktorIme} {props.doktorPrezime}</p>
-          <p>Termin: {props.datum} {props.vreme}</p>
-          <p>Usluga:</p>
+          <h1 className={styles.heading}>Detalji pregleda:</h1>
+          <p><span className={styles.label}>Doktor: </span> {props.doktorIme} {props.doktorPrezime}</p>
+          <p><span className={styles.label}>Termin: </span> {props.datum} {props.vreme}</p>
+          <p><span className={styles.label}>Usluga: </span></p>
           <form method="post" onSubmit={handleSubmit(onSubmit)}>
            <Controller
               name="usluga"
@@ -56,7 +57,7 @@ const [usluge, setUsluge]=useState([]);
               render={({ field }) => (
                <div className={styles.item}>
                 <Select
-                sx={{width:180}}
+                sx={{width:250}}
                   value={field.value}
                   onChange={(e) => field.onChange(e.target.value)}
                 >
@@ -69,7 +70,7 @@ const [usluge, setUsluge]=useState([]);
                 </div>  
             
               )}/>
-              <ContainedButton text="POTVRDI" type="submit"/>\
+              <ContainedButton text="ZAKAŽI" type="submit" module={styles.button}/>
               </form>
           
           </Box></Modal></>
