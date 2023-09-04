@@ -196,9 +196,7 @@ console.log(doktori);
            <Link to={`/zakazivanjeRaspored/${formattedPocetniDatum || null}/${formattedKrajnjiDatum || null}/${formattedPocetnoVreme || null}/${formattedKrajnjeVreme || null}/${formattedData && formattedData.doktor || null}/${formattedData && formattedData.usluga || null}/${index}`}>
 
                   <div key={index} className={styles.doktor}>
-                   <div className={styles.imageDiv}>
-                     <img className={styles.image} src={require(`../../images/${[doktor.slika]}`)}/>
-                     </div>
+                 
                     <p>{doktor.ime} {doktor.prezime}</p>
                     
                   </div>
@@ -211,9 +209,9 @@ console.log(doktori);
 
 
                   <div key={index} className={styles.doktor}>
-                    <div className={styles.imageDiv}>
+                    {/*<div className={styles.imageDiv}>
                      <img className={styles.image} src={require(`../../images/${[doktor.slika]}`)}/>
-                     </div>
+         </div>*/}
                     <p>{doktor.ime} {doktor.prezime}</p>
                   </div>
                   </Link>

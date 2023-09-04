@@ -283,10 +283,30 @@ const zakaziPregled=async({idTermin, idKorisnikPacijent, idKorisnikDoktor, naziv
         console.log('error:',error);
     }
 }
-
-
-
-
+const obavljeniPreglediDoktor=async({idDoktor, nazivUsluga})=>{
+    try{
+    const response=await axios.get(`${url}/obavljeniPreglediDoktor/${idDoktor}/${nazivUsluga}`);
+    return response.data;
+}catch(error){
+    console.log('error:',error);
+}
+}
+const brojObavljeniDoktor=async(idDoktor)=>{
+    try{
+        const response=await axios.get(`${url}/brojObavljeniDoktor/${idDoktor}`);
+        return response.data;
+    }catch(error){
+        console.log('error:',error);
+    }
+}
+const predstojeciPreglediDoktor=async({idDoktor, nazivUsluga})=>{
+    try{
+    const response=await axios.get(`${url}/predstojeciPreglediDoktor/${idDoktor}/${nazivUsluga}`);
+    return response.data;
+}catch(error){
+    console.log('error:',error);
+}
+}
 
 export const Services={
     getAllGrana,
@@ -311,5 +331,8 @@ export const Services={
     getPregledTermin,
     pretrazivanjeTermina,
     sveUsluge, 
-    zakaziPregled
+    zakaziPregled,
+    obavljeniPreglediDoktor,
+    brojObavljeniDoktor,
+    predstojeciPreglediDoktor
 };

@@ -10,7 +10,7 @@ return(<>
                 <div className={props.module.info}>
                 {props.uloga==='Doktor' ? 
                 <div className={props.module.imageDiv}>
-                <img className={props.module.image} src={require(`../../images/${[props.slika]}`)}/>
+                <img className={props.module.image} src={`../../images/${[props.slika]}`}/>
                 </div> : null}
                 <div className={props.module.text}>
                 {props.uloga==='Doktor'? <p><span className={props.module.label}>Specijalnost:</span> {props.module.nazivGrana}</p> : <p><span className={props.module.label}>Broj kartona:</span> {props.brojKartona}</p>}

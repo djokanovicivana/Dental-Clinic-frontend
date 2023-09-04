@@ -64,7 +64,6 @@ export default function DoktorPacijentiPage(){
                       <span> {pacijent.ime} </span> 
                       <span> {pacijent.prezime} </span> 
                       </div>
-                      <span className={styles.buttonSpan}><Link to={`/pacijentInfo/${pacijent.idKorisnik}`}><ContainedButton text={<MoreHorizIcon/>} module={styles.button}/></Link></span>
                       </div>
                       </div>
         

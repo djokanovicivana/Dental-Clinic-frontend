@@ -24,6 +24,7 @@ import SviZaposleniPage from './pages/SviZaposleniPage/SviZaposleniPage';
 import AdminProfilPage from './pages/AdminProfilPage/AdminProfilPage';
 import Raspored from './components/Raspored/Raspored';
 import ZakazivanjeRaspored from './pages/ZakazivanjeRaspored/ZakazivanjeRaspored';
+import DoktorPreglediPage from './pages/DoktorPreglediPage/DoktorPreglediPage';
 function App() {
   return (
     <BrowserRouter>
@@ -37,6 +38,7 @@ function App() {
           <Route path="/admin"  element={<AdminPage/>}/>
           <Route path="/doktor"  element={<DoktorPage/>}/>
            <Route path="/raspored"  element={<Raspored/>}/>
+           <Route path="/doktorPregledi"  element={<DoktorPreglediPage/>}/>
           <Route path="/pacijent" element={<PacijentPage/>}/>
           <Route path="/doktorPacijenti" element={<DoktorPacijentiPage/>}/>
           <Route path="/pacijentInfo/:pacijentId" element={<PacijentInfoPage/>}/>

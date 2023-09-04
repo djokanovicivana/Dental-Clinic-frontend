@@ -5,6 +5,7 @@ export default function DoktorPage(){
     return(
         <>
            <Navbar 
+           text1={<Link to="/doktorPregledi">Pregledi</Link>}
            text2={<Link to="/doktorPacijenti">Pacijenti</Link>}
            text3={<Link to="/raspored">Raspored</Link>} 
            text4={<Link to="/doktorProfil">Tvoj profil</Link>}
