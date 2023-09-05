@@ -13,6 +13,7 @@ background: rgba(255, 255, 255, 0.4);
   -webkit-box-shadow: 10px 10px 14px -1px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 10px 10px 14px -1px rgba(0, 0, 0, 0.75);
   margin-bottom: 3vh;
+  cursor: pointer;
 }
 .text{
     margin-left:2vw;

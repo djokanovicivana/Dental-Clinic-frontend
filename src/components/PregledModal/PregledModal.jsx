@@ -6,6 +6,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Services } from '../../services/Services';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import ContainedButton from '../ContainedButton/ContainedButton';
 export default function PregledModal(props) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -19,6 +20,11 @@ export default function PregledModal(props) {
     };
     fetchData();
   },[props.idTermin]);
+  const handleButtonClick=async()=>{
+    console.log("KLIKNUTO")
+    const response=await Services.otkaziPregled(props.idPregled);
+    console.log(response);
+  }
 
   return (
     <div>
@@ -32,6 +38,7 @@ export default function PregledModal(props) {
           <CloseIcon onClick={handleClose} className={styles.close} variant="large"/>
           {info && <div className={styles.info}><p>Pacijent: {info.ime} {info.prezime}</p>
           <p>Usluga: {info.nazivUsluga}</p> </div> }
+          <ContainedButton text="Otkaži" module={styles.button} handleClick={handleButtonClick}/>
         </Box>
       </Modal>
     </div>

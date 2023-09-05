@@ -1,0 +1,67 @@
+.select{
+    margin-left:30vw;
+    margin-top: 5vh;
+    display: flex;
+    gap:1vw;
+    height: 10vh;
+    margin-bottom: 4vh;
+}
+.pregled{
+        background: rgba(255, 255, 255, 0.4);
+        font-size: 20px;
+        width: 50vw;
+        min-height: fit-content;
+        margin: auto;
+        color: #0077b6;
+        font-weight: bolder;
+        border-radius: 15px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        /* Dodajte ovu liniju */
+        box-shadow: 10px 10px 14px -1px rgba(0, 0, 0, 0.75);
+        -webkit-box-shadow: 10px 10px 14px -1px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 10px 10px 14px -1px rgba(0, 0, 0, 0.75);
+        margin-bottom: 3vh;
+        gap: 2vw;
+    }
+.label{
+    font-size: 1.3rem;
+    color: #0077b6;
+    font-weight: bolder;
+}
+.detalji{
+    font-size: 15px;
+        color: #caf0f8;
+        padding-left: 20px;
+        padding-right: 20px;
+        background: linear-gradient(to bottom right, #0077b6, #00b4d8, #90e0ef);
+        border: none;
+        height: 50px;
+        width: 70x;
+        border-radius: 20px;
+        cursor: pointer;
+        padding-top: 0;
+        padding-bottom: 0;
+        
+
+}
+.otkazi {
+    font-size: 15px;
+    color: #caf0f8;
+    padding-left: 20px;
+    padding-right: 20px;
+    background: linear-gradient(to bottom right, #0077b6, #00b4d8, #90e0ef);
+    border: none;
+    height: 50px;
+    width: 70x;
+    border-radius: 20px;
+    cursor: pointer;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 2vh;
+}
+.otkaziContainer{
+    margin-top: 2vh;
+}

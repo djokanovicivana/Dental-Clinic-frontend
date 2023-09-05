@@ -43,7 +43,7 @@ function App() {
           <Route path="/doktorPacijenti" element={<DoktorPacijentiPage/>}/>
           <Route path="/pacijentInfo/:pacijentId" element={<PacijentInfoPage/>}/>
           <Route path="/pregledInfo/:doktorId/:pregledId" element={<PregledInfoPage/>}/>
-          <Route path="/noviPregled/:pacijentId" element={<NoviPregledPage/>}/>
+          <Route path="/noviPregled/:pacijentId" element={<NoviPregledPage />}/>
           <Route path="/doktorProfil" element={<DoktorProfilPage/>}/>
            <Route path="/adminProfil" element={<AdminProfilPage/>}/>
            <Route path="/sviZaposleni" element={<SviZaposleniPage/>}/>

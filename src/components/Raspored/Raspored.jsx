@@ -14,6 +14,7 @@ export default function Raspored() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await Services.getTerminiZaDoktora(doktorId);
+      console.log(response);
 
       const uniqueDatumi = Array.from(new Set(response.map(item => item.datumTermina))).sort();
       setDatumi(uniqueDatumi);
@@ -29,7 +30,8 @@ for (const datum of uniqueDatumi) {
     if (foundTermin) { 
       row.push({
         status: foundTermin.zakazan ? "Zakazan" : "Slobodan",
-        idTermin: foundTermin.idTermin
+        idTermin: foundTermin.idTermin,
+        idPregled:foundTermin.zakazan ? foundTermin.idPregled : null
     });
     } else {
       row.push("");
@@ -83,7 +85,7 @@ const tabelaStil = {
     fontWeight:'bolder',
     color:'white',
     padding:'6px'
-  }}>{raspored[rowIndex][columnIndex].status ==='Zakazan' ? (<PregledModal label="..." idTermin={raspored[rowIndex][columnIndex].idTermin} />) : null}
+  }}>{raspored[rowIndex][columnIndex].status ==='Zakazan' ? (<PregledModal label="..." idTermin={raspored[rowIndex][columnIndex].idTermin} idPregled={raspored[rowIndex][columnIndex].idPregled}  />) : null}
               </TableCell>
             ))}
           </TableRow>

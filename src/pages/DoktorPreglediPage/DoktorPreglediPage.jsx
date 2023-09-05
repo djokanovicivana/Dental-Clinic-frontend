@@ -9,6 +9,9 @@ import "@fontsource/nunito";
 import { Services } from "../../services/Services";
 import { TokenServices } from "../../services/TokenServices";
 import {format} from 'date-fns';
+import styles from "./DoktorPreglediPage.module.css";
+import ContainedButton from "../../components/ContainedButton/ContainedButton";
+import ModalPotvrda from "../../components/ModalPotvrda/ModalPotvrda";
 export default function DoktorPreglediPage(){
       const doktorId=TokenServices.uzimanjeSesijeId();
       const [tabValue, setTabValue] = useState(0);
@@ -83,10 +86,15 @@ export default function DoktorPreglediPage(){
                         <div>
                             <p>{brojObavljenih}</p>
                             {obavljeniPregledi.map((pregled, index)=>(
-                                <div key={index}>
-                                   {pregled.ime} {pregled.prezime}{' '}
-                                   {format(new Date(pregled.datumTermina), 'dd.MM.yyyy.')}{' '}
-                                   {format(new Date(`2000-01-01T${pregled.vremeTermina}`),'HH:mm')}
+                                <div key={index} className={styles.pregled}>
+                                   <p>{pregled.ime} {pregled.prezime}</p>
+                                   <p>{format(new Date(pregled.datumTermina), 'dd.MM.yyyy.')}{' '}
+                                   {format(new Date(`2000-01-01T${pregled.vremeTermina}`),'HH:mm')}</p>
+                                   <Link to={`/pregledInfo/${doktorId}/${pregled.idPregled}`}>
+                                    <div className={styles.detaljiContainer}>
+                                    <ContainedButton module={styles.detalji} text="Detaljnije.."/>
+                                    </div>
+                                    </Link>
                                    
                                 </div>
                             ))}
@@ -94,14 +102,25 @@ export default function DoktorPreglediPage(){
                         {tabValue===1 && predstojeciPregledi &&
                         <div>
                             {predstojeciPregledi.map((pregled, index)=>(
-                                <div key={index}>
-                                   {pregled.ime} {pregled.prezime}{' '}
-                                   {format(new Date(pregled.datumTermina), 'dd.MM.yyyy.')}{' '}
-                                   {format(new Date(`2000-01-01T${pregled.vremeTermina}`),'HH:mm')}
+                                <div key={index} className={styles.pregled}>
+                                   <p>{pregled.ime} {pregled.prezime}</p>
+                                   <p>{format(new Date(pregled.datumTermina), 'dd.MM.yyyy.')}{' '}
+                                   {format(new Date(`2000-01-01T${pregled.vremeTermina}`),'HH:mm')}</p>
+                                     <ModalPotvrda label={
+                                    <div className={styles.otkaziContainer}>
+                                    <ContainedButton module={styles.otkazi} text="Otkaži"/>
+                                    </div>}
+                                    text={<p>Da li si siguran da želiš da otkažeš termin?</p>}
+                                    onConfirm={async()=>{
+                                      const response=await Services.otkaziPregled(pregled.idPregled);
+                                      console.log(response);
+                                    }}/>
+                                   
+                                   
                                 </div>
                             ))}
-                        </div>
-                        }
+                            </div>}
+                        
                             
                         </ThemeProvider>
         </>

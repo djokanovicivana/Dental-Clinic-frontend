@@ -6,13 +6,13 @@ import { Link } from "react-router-dom";
 import Navbar from "../../components/navbar/Navbar";
 import styles from "./DoktorPacijentiPage.module.css";
 import ContainedButton from "../../components/ContainedButton/ContainedButton";
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import SearchIcon from '@mui/icons-material/Search';
 import { TokenServices } from "../../services/TokenServices";
 import { OutlinedInput, TextField } from "@mui/material";
-
+import { useNavigate } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 export default function DoktorPacijentiPage(){
+    const navigate=useNavigate();
     const doktorId=TokenServices.uzimanjeSesijeId();
     const {register, handleSubmit}=useForm();
     const [pacijenti,setPacijenti]=useState([]);
@@ -59,7 +59,9 @@ export default function DoktorPacijentiPage(){
            </form>
     {pacijenti.map((pacijent,index)=>(
         <div>
-        <div key={index} className={styles.item}>
+        <div key={index} className={styles.item} onClick={()=>{
+            navigate(`/pacijentInfo/${pacijent.idKorisnik}`)
+        }}>
             <div className={styles.text}><span>{pacijent.brojKartona} </span> 
                       <span> {pacijent.ime} </span> 
                       <span> {pacijent.prezime} </span> 

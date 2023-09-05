@@ -291,9 +291,25 @@ const obavljeniPreglediDoktor=async({idDoktor, nazivUsluga})=>{
     console.log('error:',error);
 }
 }
+const obavljeniPreglediPacijent=async({idPacijent, nazivUsluga})=>{
+    try{
+    const response=await axios.get(`${url}/obavljeniPreglediPacijent/${idPacijent}/${nazivUsluga}`);
+    return response.data;
+}catch(error){
+    console.log('error:',error);
+}
+}
 const brojObavljeniDoktor=async(idDoktor)=>{
     try{
         const response=await axios.get(`${url}/brojObavljeniDoktor/${idDoktor}`);
+        return response.data;
+    }catch(error){
+        console.log('error:',error);
+    }
+}
+const brojObavljenihPacijent=async(idPacijent)=>{
+    try{
+        const response=await axios.get(`${url}/brojObavljenihPacijent/${idPacijent}`);
         return response.data;
     }catch(error){
         console.log('error:',error);
@@ -306,6 +322,22 @@ const predstojeciPreglediDoktor=async({idDoktor, nazivUsluga})=>{
 }catch(error){
     console.log('error:',error);
 }
+}
+const predstojeciPreglediPacijent=async({idPacijent, nazivUsluga})=>{
+    try{
+    const response=await axios.get(`${url}/predstojeciPreglediPacijent/${idPacijent}/${nazivUsluga}`);
+    return response.data;
+}catch(error){
+    console.log('error:',error);
+}
+}
+const otkaziPregled=async(idPregled)=>{
+    try{
+        const response=await axios.post(`${url}/api/otkaziPregled/${idPregled}`);
+        return response.message;
+    }catch(error){
+        console.log('error:',error);
+    }
 }
 
 export const Services={
@@ -333,6 +365,10 @@ export const Services={
     sveUsluge, 
     zakaziPregled,
     obavljeniPreglediDoktor,
+    obavljeniPreglediPacijent,
     brojObavljeniDoktor,
-    predstojeciPreglediDoktor
+    brojObavljenihPacijent,
+    predstojeciPreglediDoktor,
+    predstojeciPreglediPacijent,
+    otkaziPregled
 };
