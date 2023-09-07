@@ -17,14 +17,17 @@ import DoktorProfilPage from './pages/DoktorProfilPage/DoktorProfilPage';
 import PacijentProfilPage from './pages/PacijentProfilPage/PacijentProfilPage';
 import ZakazivanjePage from './pages/ZakazivanjePage/ZakazivanjePage';
 import PacijentTerminiPage from './pages/PacijentTerminiPage/PacijentTerminiPage';
-import IzmenaPacijentaPage from './pages/IzmenaPacijentaPage/IzmenaPacijentaPage';
+import IzmenaProfilaPage from './pages/IzmenaProfilaPage/IzmenaProfilaPage';
 import IzmenaDoktoraPage from './pages/IzmenaDoktoraPage/IzmenaDoktoraPage';
 import SviPacijentiPage from './pages/SviPacijentiPage/SviPacijentiPage';
-import SviZaposleniPage from './pages/SviZaposleniPage/SviZaposleniPage';
+import SviDoktoriPage from './pages/SviDoktoriPage/SviDoktoriPage';
 import AdminProfilPage from './pages/AdminProfilPage/AdminProfilPage';
 import Raspored from './components/Raspored/Raspored';
 import ZakazivanjeRaspored from './pages/ZakazivanjeRaspored/ZakazivanjeRaspored';
 import DoktorPreglediPage from './pages/DoktorPreglediPage/DoktorPreglediPage';
+import SveMedicinskeSestrePage from './pages/SveMedicinskeSestrePage/SveMedicinskeSestrePage';
+import MedicinskaSestrProfilPage from './pages/MedicinskaSestraProfilPage/MedicinskaSestraProfilPage';
+import MedicinskaSestraPage from './pages/MedicinskaSestraPage/MedicinskaSestraPage';
 function App() {
   return (
     <BrowserRouter>
@@ -37,21 +40,24 @@ function App() {
           <Route element={<PrivateRoute/>}>
           <Route path="/admin"  element={<AdminPage/>}/>
           <Route path="/doktor"  element={<DoktorPage/>}/>
-           <Route path="/raspored"  element={<Raspored/>}/>
-           <Route path="/doktorPregledi"  element={<DoktorPreglediPage/>}/>
+           <Route path="/raspored/:doktorId"  element={<Raspored/>}/>
+           <Route path="/doktorPregledi/:doktorId"  element={<DoktorPreglediPage/>}/>
           <Route path="/pacijent" element={<PacijentPage/>}/>
-          <Route path="/doktorPacijenti" element={<DoktorPacijentiPage/>}/>
-          <Route path="/pacijentInfo/:pacijentId" element={<PacijentInfoPage/>}/>
+          <Route path="/sestra" element={<MedicinskaSestraPage/>}/>
+          <Route path="/doktorPacijenti/:doktorId" element={<DoktorPacijentiPage/>}/>
+          <Route path="/pacijentInfo/:pacijentId/:doktorId" element={<PacijentInfoPage/>}/>
           <Route path="/pregledInfo/:doktorId/:pregledId" element={<PregledInfoPage/>}/>
           <Route path="/noviPregled/:pacijentId" element={<NoviPregledPage />}/>
-          <Route path="/doktorProfil" element={<DoktorProfilPage/>}/>
-           <Route path="/adminProfil" element={<AdminProfilPage/>}/>
-           <Route path="/sviZaposleni" element={<SviZaposleniPage/>}/>
+          <Route path="/doktorProfil/:doktorId" element={<DoktorProfilPage/>}/>
+           <Route path="/profilAdmin" element={<AdminProfilPage/>}/>
+           <Route path="/profilSestra/:sestraId" element={<MedicinskaSestrProfilPage/>}/>
+           <Route path="/sviDoktori" element={<SviDoktoriPage/>}/>
            <Route path="/sviPacijenti" element={<SviPacijentiPage/>}/>
-          <Route path="/pacijentProfil" element={<PacijentProfilPage/>}/>
-          <Route path="/pacijentTermini" element={<PacijentTerminiPage/>}/>
-          <Route path="/zakazivanje" element={<ZakazivanjePage/>}/>
-          <Route path="/izmenaPacijenta/:pacijentId" element={<IzmenaPacijentaPage uloga="Pacijent"/>}/>
+           <Route path="/sveMedicinskeSestre" element={<SveMedicinskeSestrePage/>}/>
+          <Route path="/pacijentProfil/:pacijentId" element={<PacijentProfilPage/>}/>
+          <Route path="/pacijentTermini/:pacijentId" element={<PacijentTerminiPage/>}/>
+          <Route path="/zakazivanje/:pacijentId" element={<ZakazivanjePage/>}/>
+          <Route path="/izmenaKorisnika/:korisnikId/:uloga" element={<IzmenaProfilaPage/>}/>
            <Route path="/izmenaDoktora/:doktorId" element={<IzmenaDoktoraPage uloga="Doktor"/>}/>
            <Route path="/zakazivanjeRaspored/:pocetniDatum/:krajnjiDatum/:pocetnoVreme/:krajnjeVreme/:doktor/:usluga/:index" element={<ZakazivanjeRaspored/>}/>
 

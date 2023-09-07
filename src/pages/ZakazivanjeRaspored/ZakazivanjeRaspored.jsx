@@ -8,8 +8,9 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import AddIcon from '@mui/icons-material/Add';
 import ModalZakazivanje from "../../components/ModalZakazivanje/ModalZakazivanje";
+
 export default function ZakazivanjeRaspored(props) {
-  const pacijentId=TokenServices.uzimanjeSesijeId();
+  const pacijentId=useParams();
  const { pocetniDatum, krajnjiDatum, pocetnoVreme, krajnjeVreme, doktor, usluga, index } = useParams();
 console.log(pocetniDatum);
  console.log(index);
@@ -98,10 +99,10 @@ const tabelaStil = {
 
   return (
     <>
-     <Navbar 
-           text2={<Link to="/zakazivanje">Zakaži termin</Link>}
-           text3={<Link to="/pacijentTermini">Tvoji termini</Link>} 
-           text4={<Link to="/pacijentProfil">Tvoj profil</Link>}
+       <Navbar 
+           text2={<Link to={`/zakazivanje/${pacijentId}`}>Zakaži termin</Link>}
+           text3={<Link to={`/pacijentTermini/${pacijentId}`}>Tvoji termini</Link>} 
+           text4={<Link to={`/pacijentProfil/${pacijentId}`}>Tvoj profil</Link>}
            text5="Odjavi se"/>
     <Table style={tabelaStil}>
       <TableHead>

@@ -4,16 +4,30 @@ import { format, parseISO } from "date-fns";
 import { Services } from "../../services/Services";
 import { TokenServices } from "../../services/TokenServices";
 import Navbar from "../navbar/Navbar";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import PregledModal from "../PregledModal/PregledModal";
 export default function Raspored() {
-  const doktorId = TokenServices.uzimanjeSesijeId();
+  const uloga=TokenServices.uzimanjeSesijeUloga();
+  const {doktorId}=useParams();
+  const [id, setId]=useState(doktorId);
   const [datumi, setDatumi] = useState([]);
   const [sati, setSati] = useState([]);
   const [raspored, setRaspored] = useState([]);
+  const [sestraId, setSestraId]=useState([]);
+  useEffect(()=>{
+    const fetchData=async()=>{
+    if(uloga==='Medicinska Sestra'){
+        setSestraId(TokenServices.uzimanjeSesijeId());
+    }if(!doktorId && uloga==='MedicinskaSestra'){
+      const response=await Services.sestraId(TokenServices.uzimanjeSesijeId);
+      setId(response[0].idDoktor);
+    }};
+    fetchData();
+  }, [uloga]);
+   
   useEffect(() => {
     const fetchData = async () => {
-      const response = await Services.getTerminiZaDoktora(doktorId);
+      const response = await Services.getTerminiZaDoktora(id);
       console.log(response);
 
       const uniqueDatumi = Array.from(new Set(response.map(item => item.datumTermina))).sort();
@@ -43,7 +57,7 @@ setRaspored(newRaspored);
     };
 
     fetchData();
-  }, [doktorId]);
+  }, [doktorId, uloga]);
 const tabelaStil = {
   borderCollapse: "collapse",
   width: "70%",
@@ -54,11 +68,23 @@ const tabelaStil = {
 
   return (
     <>
-     <Navbar 
-           text2={<Link to="/doktorPacijenti">Pacijenti</Link>}
-           text3={<Link to="/raspored">Raspored</Link>} 
-           text4={<Link to="/doktorProfil">Tvoj profil</Link>}
+     {uloga==='Doktor' ?  (<Navbar 
+           text1={<Link to={`/doktorPregledi/${doktorId}`}>Pregledi</Link>}
+           text2={<Link to={`/doktorPacijenti/${doktorId}`}>Pacijenti</Link>}
+           text3={<Link to={`/raspored/${doktorId}`}>Raspored</Link>} 
+           text4={<Link to={`/doktorProfil/${doktorId}`}>Tvoj profil</Link>}
+           text5="Odjavi se"/>) : (uloga==='Medicinska Sestra' ? (
+         <Navbar 
+           text2={<Link to={`/doktorPacijenti/${id}`}>Pacijenti</Link>}
+           text3={<Link to={`/raspored/${id}`}>Raspored</Link>} 
+           text4={<Link to={`/profilSestra/${sestraId}`}>Tvoj profil</Link>}
            text5="Odjavi se"/>
+           ):  <Navbar
+        text1={<Link to="/sviDoktori">Doktori</Link>}
+        text2={<Link to="/sveMedicinskeSestre">Medicinske sestre</Link>}
+        text3={<Link to="/sviPacijenti">Pacijenti</Link>}
+        text4={<Link to="/profilAdmin">Tvoj profil</Link>}
+        text5="Odjavi se"/>)}
     <Table style={tabelaStil}>
       <TableHead>
         <TableRow>

@@ -10,9 +10,20 @@ export default function PregledInfoPage() {
     const { doktorId, pregledId } = useParams();
     const uloga=TokenServices.uzimanjeSesijeUloga();
     const [pregled, setPregled] = useState([]);
+    const [sestraId, setSestraId]=useState([]);
+    const [pacijentId, setPacijentId]=useState([]);
     const [pacijent, setPacijent] = useState([]);
     const [termin, setTermin]=useState([]);
     const [usluga, setUsluga]=useState([]);
+
+    useEffect(()=>{
+        if(uloga==='Medicinska Sestra'){
+             setSestraId(TokenServices.uzimanjeSesijeId());
+        }else if(uloga==='Pacijent'){
+            setPacijentId(TokenServices.uzimanjeSesijeId());
+
+        }
+    })
 
     useEffect(() => {
         const fetchData = async () => {
@@ -39,19 +50,27 @@ export default function PregledInfoPage() {
 
     return (
         <>
-           {uloga==='Doktor' ? (<Navbar 
-                text2={<Link to={`/doktorPacijenti/${doktorId}`}>Pacijenti</Link>}
-                text3={<Link to="/raspored">Raspored</Link>} 
-                text4={<Link to="/profil">Tvoj profil</Link>}
-                text5="Odjavi se"
-            />) : (uloga==='Pacijent' ? <Navbar 
-           text2={<Link to="/zakazivanje">Zakaži termin</Link>}
-           text3={<Link to="/pacijentTermini">Tvoji termini</Link>} 
-           text4={<Link to="/pacijentProfil">Tvoj profil</Link>}
-           text5="Odjavi se"/> :  <Navbar text2={<Link to="/sviZaposleni">Zaposleni</Link>}
+           {uloga==='Doktor' ?  (<Navbar 
+           text1={<Link to={`/doktorPregledi/${doktorId}`}>Pregledi</Link>}
+           text2={<Link to={`/doktorPacijenti/${doktorId}`}>Pacijenti</Link>}
+           text3={<Link to={`/raspored/${doktorId}`}>Raspored</Link>} 
+           text4={<Link to={`/doktorProfil/${doktorId}`}>Tvoj profil</Link>}
+           text5="Odjavi se"/>) : (uloga==='Medicinska Sestra' ? (
+         <Navbar 
+           text2={<Link to={`/doktorPacijenti/${doktorId}`}>Pacijenti</Link>}
+           text3={<Link to={`/raspored/${doktorId}`}>Raspored</Link>} 
+           text4={<Link to={`/profilSestra/${sestraId}`}>Tvoj profil</Link>}
+           text5="Odjavi se"/>
+           ): (uloga==='Administrator' ? ( <Navbar
+        text1={<Link to="/sviDoktori">Doktori</Link>}
+        text2={<Link to="/sveMedicinskeSestre">Medicinske sestre</Link>}
         text3={<Link to="/sviPacijenti">Pacijenti</Link>}
         text4={<Link to="/profilAdmin">Tvoj profil</Link>}
-        text5="Odjavi se"/>)}
+        text5="Odjavi se"/>) :    (<Navbar 
+           text2={<Link to="/zakazivanje">Zakaži termin</Link>}
+           text3={<Link to="/pacijentTermini">Tvoji termini</Link>} 
+           text4={<Link to={`/pacijentProfil/${pacijentId}`}>Tvoj profil</Link>}
+           text5="Odjavi se"/>)))}
             <div className={styles.box}>
                 <h1 className={styles.heading}>Detalji pregleda</h1>
                 <div className={styles.info}>

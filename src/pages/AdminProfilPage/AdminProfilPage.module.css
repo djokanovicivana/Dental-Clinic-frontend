@@ -6,12 +6,12 @@
     box-shadow: 10px 10px 14px -1px rgba(0, 0, 0, 0.75);
     padding: 2%;
     margin: auto;
-
+    margin-top: 2%;
 
 }
 
 .info {
-   
+
     width: 100%;
 
 }
@@ -39,27 +39,6 @@
     border: none;
     height: 50px;
     width: 10vw;
-    border-radius: 20px;
-    cursor: pointer;
-    margin-right: 0;
-    margin-bottom: 2vh;
-
-}
-.opcije{
-    display:flex;
-    margin-left: 30vw;
-    gap:3vw;
-    margin-top: 1vh;
-}
-.button1 {
-    font-size: 20px;
-    color: #caf0f8;
-    padding-left: 20px;
-    padding-right: 20px;
-    background: linear-gradient(to bottom right, #0077b6, #00b4d8, #90e0ef);
-    border: none;
-    height: 50px;
-    min-width: 20vw;
     border-radius: 20px;
     cursor: pointer;
     margin-right: 0;

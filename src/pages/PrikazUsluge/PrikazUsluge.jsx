@@ -40,7 +40,7 @@ export default function PrikazUsluge() {
                 text5={<Link to="/registracija">Registruj se</Link>} />
 
     {usluga.map((item) => (
-    <div key={item.idUsluga} >
+    <div key={item.idUsluga} className={styles.box}>
       <h1 >{item.nazivUsluga}</h1>
       <div className={styles.usluga}>
         <div className={styles.image}>

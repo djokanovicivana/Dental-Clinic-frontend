@@ -27,7 +27,10 @@ export default function Prijava(){
           navigate("/doktor");
         }else if(korisnikUloga==='Pacijent'){
           navigate("/pacijent");
-      }} else {
+      }else if(korisnikUloga==='Medicinska Sestra'){
+        navigate("/sestra");
+      }
+    } else {
         toast.error("Uneti podaci su pogrešni.Pokušajte ponovo!", {
           position: toast.POSITION.TOP_RIGHT,
           autoClose:1500

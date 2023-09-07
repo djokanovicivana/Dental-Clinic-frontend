@@ -2,38 +2,50 @@ import React from "react";
 import {useForm, Controller } from "react-hook-form";
 import { TextField } from "@mui/material";
 import ContainedButton from "../../components/ContainedButton/ContainedButton";
-import styles from "./IzmenaPacijentaPage.module.css";
+import styles from "./IzmenaProfilaPage.module.css";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Services } from "../../services/Services";
 import { useParams } from "react-router-dom";
 import Navbar from "../../components/navbar/Navbar";
 import { Link } from "react-router-dom";
-export default function IzmenaPacijentaPage(props){
-const {pacijentId}=useParams();
-const [pacijent,setPacijent]=useState({});
+import { TokenServices } from "../../services/TokenServices";
+export default function IzmenaProfilaPage(props){
+const rola=TokenServices.uzimanjeSesijeUloga();
+const {korisnikId, uloga}=useParams();
+const [korisnik,setKorisnik]=useState({});
+const [doktorId, setDoktorId]=useState(null);
 const { register, handleSubmit,  formState: { errors }, reset } = useForm();
 useEffect(()=>{
     const fetchData=async()=>{
-        const response=await Services.getPacijentId(pacijentId);
-        setPacijent(response[0]);
-    };
-    fetchData();
-},[pacijentId]);
+        if(uloga==='Pacijent'){
+        const response=await Services.getPacijentId(korisnikId);
+        setKorisnik(response[0]);}
+        else if(uloga==='Administrator'){
+        const response=await Services.adminId(korisnikId);
+        setKorisnik(response[0]);}
+        else if(uloga==='Medicinska sestra'){
+        const response=await Services.sestraId(korisnikId);
+        setKorisnik(response[0]);
+        setDoktorId(response[0].idDoktor);
+    }}
+fetchData();
+},[korisnikId]);
+
 useEffect(() => {
-    if (pacijent) {
+    if (korisnik) {
         reset({
-            ime: pacijent.ime,
-            prezime: pacijent.prezime,
-            brojTelefona:pacijent.brojTelefona,
-            email:pacijent.email,
-            korisnickoIme:pacijent.korisnickoIme,
-            godiste:pacijent.godiste,
+            ime: korisnik.ime,
+            prezime: korisnik.prezime,
+            brojTelefona:korisnik.brojTelefona,
+            email:korisnik.email,
+            korisnickoIme:korisnik.korisnickoIme,
+            godiste:korisnik.godiste,
         });
     }
-}, [pacijent]); 
+}, [korisnik]); 
 const onSubmit=async(data)=>{
-    const response=await Services.izmeniPacijenta(
+    const response=await Services.izmeniKorisnika(
         {     'ime':data.ime,
          'prezime':data.prezime,
          'korisnickoIme':data.korisnickoIme,
@@ -45,22 +57,26 @@ const onSubmit=async(data)=>{
 'new_password_confirmation':data.new_password_confirmation
 }
     );
-    console.log(response);
-    console.log(data,pacijentId);
+    console.log(response);   
 }
-console.log(pacijent.ime);
     return(<>
-    {props.uloga==='Administrator' ? <Navbar text2="Zaposleni"
-    text3="Pacijenti"
-text4="Tvoj profil"
-text5="Odjavi se"/> : <Navbar 
-           text2={<Link to={`/zakazivanje/${pacijentId}`}>Zakaži termin</Link>}
-           text3={<Link to={`/pacijentTermini/${pacijentId}`}>Tvoji termini</Link>} 
-           text4={<Link to={`/pacijentProfil/${pacijentId}`}>Tvoj profil</Link>}
-           text5="Odjavi se"/>}
+    {rola==='Administrator' ?  (<Navbar
+        text1={<Link to="/sviDoktori">Doktori</Link>}
+        text2={<Link to="/sveMedicinskeSestre">Medicinske sestre</Link>}
+        text3={<Link to="/sviPacijenti">Pacijenti</Link>}
+        text4={<Link to="/profilAdmin">Tvoj profil</Link>}
+        text5="Odjavi se"/>): (rola==='Pacijent' ? ( <Navbar 
+           text2={<Link to="/zakazivanje">Zakaži termin</Link>}
+           text3={<Link to="/pacijentTermini">Tvoji termini</Link>} 
+           text4={<Link to={`/pacijentProfil/${korisnikId}`}>Tvoj profil</Link>}
+           text5="Odjavi se"/>):   <Navbar 
+           text2={<Link to={`/doktorPacijenti/${doktorId}`}>Pacijenti</Link>}
+           text3={<Link to={`/raspored/${doktorId}`}>Raspored</Link>} 
+           text4={<Link to={`/profilSestra/${korisnikId}`}>Tvoj profil</Link>}
+           text5="Odjavi se"/>) }
            <div className={styles.box}>
             <h1 className={styles.heading}>Izmeni podatke:</h1>
-         {pacijent &&   <form onSubmit={handleSubmit(onSubmit)} method="PATCH" className={styles.form}>
+         {korisnik &&   <form onSubmit={handleSubmit(onSubmit)} method="PATCH" className={styles.form}>
                 <div className={styles.row1}>
                     <div className={styles.item}>
                         <p className={styles.label}>Ime: </p>

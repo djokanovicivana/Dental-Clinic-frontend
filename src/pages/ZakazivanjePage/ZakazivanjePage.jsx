@@ -16,8 +16,9 @@ import {format} from 'date-fns'
 import { Services } from "../../services/Services";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 export default function ZakazivanjePage(){
-    const pacijentId=TokenServices.uzimanjeSesijeId();
+    const pacijentId=useParams();
     const {register, handleSubmit, control}=useForm();
     const [usluge, setUsluge]=useState([]);
     const [doktori, setDoktori]=useState([]);
@@ -72,10 +73,10 @@ console.log(sviDoktori);
 console.log(doktori);
     return(
         <>
-         <Navbar 
-           text2={<Link to="/zakazivanje">Zakaži termin</Link>}
-           text3={<Link to="/pacijentTermini">Tvoji termini</Link>} 
-           text4={<Link to="pacijentProfil">Tvoj profil</Link>}
+           <Navbar 
+           text2={<Link to={`/zakazivanje/${pacijentId}`}>Zakaži termin</Link>}
+           text3={<Link to={`/pacijentTermini/${pacijentId}`}>Tvoji termini</Link>} 
+           text4={<Link to={`/pacijentProfil/${pacijentId}`}>Tvoj profil</Link>}
            text5="Odjavi se"/>
     <form method="get" onSubmit={handleSubmit(onSubmit)} className={styles.searchBar}>
              <Controller

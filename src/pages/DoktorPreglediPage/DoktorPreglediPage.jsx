@@ -12,14 +12,19 @@ import {format} from 'date-fns';
 import styles from "./DoktorPreglediPage.module.css";
 import ContainedButton from "../../components/ContainedButton/ContainedButton";
 import ModalPotvrda from "../../components/ModalPotvrda/ModalPotvrda";
+import { useParams } from "react-router-dom";
 export default function DoktorPreglediPage(){
-      const doktorId=TokenServices.uzimanjeSesijeId();
+      const {doktorId}=useParams();
       const [tabValue, setTabValue] = useState(0);
       const [tabValue1, setTabValue1] = useState(0);
       const [usluge, setUsluge]=useState([]);
+      const [sestraId, setSestraId]=useState(null);
       const [obavljeniPregledi, setObavljeniPregledi]=useState([]);
       const [predstojeciPregledi, setPredstojeciPregledi]=useState([]);
       const [brojObavljenih, setBrojObavljenih]=useState(null);
+      const uloga=TokenServices.uzimanjeSesijeUloga();
+        if(uloga==='Medicinska Sestra'){
+             setSestraId(TokenServices.uzimanjeSesijeId());}
     useEffect(()=>{
         const fetchData=async()=>{
             const response=await Services.getUslugaZaDoktora(doktorId);
@@ -62,12 +67,23 @@ export default function DoktorPreglediPage(){
 });
     return(
         <>
-          <Navbar 
-           text1={<Link to="/doktorPregledi">Pregledi</Link>}
-           text2={<Link to="/doktorPacijenti">Pacijenti</Link>}
-           text3={<Link to="/raspored">Raspored</Link>} 
-           text4={<Link to="/doktorProfil">Tvoj profil</Link>}
+         {uloga==='Doktor' ?  (<Navbar 
+           text1={<Link to={`/doktorPregledi/${doktorId}`}>Pregledi</Link>}
+           text2={<Link to={`/doktorPacijenti/${doktorId}`}>Pacijenti</Link>}
+           text3={<Link to={`/raspored/${doktorId}`}>Raspored</Link>} 
+           text4={<Link to={`/doktorProfil/${doktorId}`}>Tvoj profil</Link>}
+           text5="Odjavi se"/>) : (uloga==='Medicinska Sestra' ? (
+         <Navbar 
+           text2={<Link to={`/doktorPacijenti/${doktorId}`}>Pacijenti</Link>}
+           text3={<Link to={`/raspored/${doktorId}`}>Raspored</Link>} 
+           text4={<Link to={`/profilSestra/${sestraId}`}>Tvoj profil</Link>}
            text5="Odjavi se"/>
+           ):  <Navbar
+        text1={<Link to="/sviDoktori">Doktori</Link>}
+        text2={<Link to="/sveMedicinskeSestre">Medicinske sestre</Link>}
+        text3={<Link to="/sviPacijenti">Pacijenti</Link>}
+        text4={<Link to="/profilAdmin">Tvoj profil</Link>}
+        text5="Odjavi se"/>)}
            <ThemeProvider theme={theme}>
                             <Tabs value={tabValue} onChange={handleTabChange} variant="fullWidth" indicatorColor="primary" textColor="primary">
                                 <Tab label="Obavljeni pregledi"/>

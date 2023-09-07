@@ -13,12 +13,13 @@ return(<>
                 <img className={props.module.image} src={`../../images/${[props.slika]}`}/>
                 </div> : null}
                 <div className={props.module.text}>
-                {props.uloga==='Doktor'? <p><span className={props.module.label}>Specijalnost:</span> {props.module.nazivGrana}</p> : <p><span className={props.module.label}>Broj kartona:</span> {props.brojKartona}</p>}
+                {props.uloga==='Doktor'? <p><span className={props.module.label}>Specijalnost:</span> {props.module.nazivGrana}</p> : (props.uloga==='Pacijent' ? (<p><span className={props.module.label}>Broj kartona:</span> {props.brojKartona}</p>) : null)}
                 <p><span className={props.module.label}>Godište: </span>{props.godiste}.</p>
                 <p><span className={props.module.label}>Broj telefona: </span>{props.brojTelefona}</p>
                 <p><span className={props.module.label}>E-mail: </span>{props.email}</p>
                 <p><span className={props.module.label}>Korisničko ime: </span> {props.korisnickoIme}</p>
                 <Link to={props.link}><ContainedButton text={<EditIcon/>} module={props.module.button}/></Link> 
+             
                 </div>
                 </div>
                 </div>

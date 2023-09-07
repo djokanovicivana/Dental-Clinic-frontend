@@ -7,7 +7,7 @@ export default function UslugaThumbnail(props){
     return (
         <div className={styles.thumbnail} onClick={handleThumbnailClick}>
         <div className={styles.imageDiv}>
-            <img className={styles.image} src={require(`../../images/${props.image}`)}/>
+            <img className={styles.image} src={require(`../../images/background1.jpg`)}/>
         </div>
         <h2>{props.label}</h2>
         </div>

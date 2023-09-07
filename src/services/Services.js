@@ -187,9 +187,9 @@ const getDoktor=async(idDoktor)=>{
         );
     }
 }
-const izmeniPacijenta=async({ime,prezime,korisnickoIme,email,brojTelefona,godiste,old_password,new_password,new_password_confirmation})=>{
+const izmeniKorisnika=async({ime,prezime,korisnickoIme,email,brojTelefona,godiste,old_password,new_password,new_password_confirmation})=>{
     try{
-    const response=await axios.patch(`${url}/api/izmenaPacijenta/${korisnickoIme}`,{
+    const response=await axios.patch(`${url}/api/izmenaKorisnika/${korisnickoIme}`,{
         ime:ime,
         prezime:prezime,
         korisnickoIme:korisnickoIme,
@@ -339,6 +339,50 @@ const otkaziPregled=async(idPregled)=>{
         console.log('error:',error);
     }
 }
+const sviPacijenti=async({searchTerm})=>{
+    try{
+    const response=await axios.get(`${url}/sviPacijenti?searchTerm=${searchTerm}`);
+    return response.data;
+
+    }catch(error){
+        console.log('error:',error);
+    }
+}
+const sviDoktori=async({searchTerm, nazivGrana})=>{
+    try{
+    const response=await axios.get(`${url}/sviDoktori/${nazivGrana}?searchTerm=${searchTerm}`);
+    return response.data;
+
+    }catch(error){
+        console.log('error:',error);
+    }
+}
+const sveSestre=async({searchTerm, nazivGrana})=>{
+    try{
+    const response=await axios.get(`${url}/sveSestre/${nazivGrana}?searchTerm=${searchTerm}`);
+    return response.data;
+
+    }catch(error){
+        console.log('error:',error);
+    }
+}
+const adminId=async(adminId)=>{
+    try{
+        const response=await axios.get(`${url}/adminId/${adminId}`);
+        return response.data;
+    }catch(error){
+        console.log('error:',error);
+    }
+}
+const sestraId=async(sestraId)=>{
+    try{
+        const response=await axios.get(`${url}/sestraId/${sestraId}`);
+        return response.data;
+    }catch(error){
+        console.log('error:',error);
+    }
+}
+
 
 export const Services={
     getAllGrana,
@@ -356,7 +400,7 @@ export const Services={
     noviPregled,
     getUslugaZaDoktora,
     getDoktor,
-    izmeniPacijenta,
+    izmeniKorisnika,
     izmeniDoktora,
     getUslugaIdTermina,
     getTerminiZaDoktora,
@@ -370,5 +414,10 @@ export const Services={
     brojObavljenihPacijent,
     predstojeciPreglediDoktor,
     predstojeciPreglediPacijent,
-    otkaziPregled
+    otkaziPregled,
+    sviPacijenti,
+    sviDoktori,
+    sveSestre,
+    adminId,
+    sestraId,
 };

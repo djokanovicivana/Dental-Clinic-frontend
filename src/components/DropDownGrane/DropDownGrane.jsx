@@ -57,7 +57,7 @@ export default function DropDownMenu(props) {
         className={styles.menu}
       >
         {items.map((item,  index) => (
-          <MenuItem component={Link}
+          <MenuItem  component={Link}
             to={`/Usluge/${item.idGrana}/${item.nazivGrana}`} className={styles.menuItem} key={index}>{item.nazivGrana}</MenuItem>
         ))}
       </Menu>

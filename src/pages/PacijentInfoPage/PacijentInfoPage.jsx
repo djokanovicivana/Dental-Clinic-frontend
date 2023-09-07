@@ -14,20 +14,26 @@ import ContainedButton from "../../components/ContainedButton/ContainedButton";
 import AddIcon from '@mui/icons-material/Add';
 import { TokenServices } from "../../services/TokenServices";
 export default function PacijentInfoPage(){
-    const doktorId=TokenServices.uzimanjeSesijeId();
-    const { pacijentId } = useParams();
+    const { pacijentId, doktorId } = useParams();
+    const [id, setId]=useState(doktorId);
+    const [sestraId, setSestraId]=useState(null);
     const [pacijent, setPacijent] = useState([]);
     const [obavljeniPregledi, setObavljeniPregledi]=useState([]);
     const [predstojeciPregledi, setPredstojeciPregledi]=useState([]);
     const [tabValue, setTabValue] = useState(0);
-
+    const uloga=TokenServices.uzimanjeSesijeUloga();
     const handleTabChange = (event, newValue) => {
         setTabValue(newValue);
     };
+    useEffect(()=>{if(uloga==='Medicinska Sestra'){
+        setSestraId(TokenServices.uzimanjeSesijeId());
+    }},[uloga]);
+    
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await Services.getPacijentId(pacijentId,doktorId);
+            
+            const response = await Services.getPacijentId(pacijentId,id);
             console.log(response);
             setPacijent(response);
         };
@@ -35,17 +41,19 @@ export default function PacijentInfoPage(){
     }, [pacijentId]);
     useEffect(() => {
         const fetchData = async () => {
-            const response = await Services.getTerminiBuduciPacijent(pacijentId,doktorId);
-            setPredstojeciPregledi(response);
+            if(id){
+            const response = await Services.getTerminiBuduciPacijent(pacijentId,id);
+            setPredstojeciPregledi(response);}
             
         };
         fetchData();
     }, [pacijentId]);
         useEffect(() => {
         const fetchData = async () => {
-            const response = await Services.getTerminiZavrseniPacijent(pacijentId,doktorId);
+            if(id){
+            const response = await Services.getTerminiZavrseniPacijent(pacijentId,id);
             setObavljeniPregledi(response);
-            console.log(response);
+            console.log(response);}
             
         };
         fetchData();
@@ -68,11 +76,23 @@ export default function PacijentInfoPage(){
 
     return (
         <div>
-            <Navbar 
-           text2={<Link to="/doktorPacijenti">Pacijenti</Link>}
-           text3={<Link to="/raspored">Raspored</Link>} 
-           text4={<Link to="/doktorProfil">Tvoj profil</Link>}
+       {uloga==='Doktor' ?  (<Navbar 
+           text1={<Link to={`/doktorPregledi/${doktorId}`}>Pregledi</Link>}
+           text2={<Link to={`/doktorPacijenti/${doktorId}`}>Pacijenti</Link>}
+           text3={<Link to={`/raspored/${doktorId}`}>Raspored</Link>} 
+           text4={<Link to={`/doktorProfil/${doktorId}`}>Tvoj profil</Link>}
+           text5="Odjavi se"/>) : (uloga==='Medicinska Sestra' ? (
+         <Navbar 
+           text2={<Link to={`/doktorPacijenti/${doktorId}`}>Pacijenti</Link>}
+           text3={<Link to={`/raspored/${doktorId}`}>Raspored</Link>} 
+           text4={<Link to={`/profilSestra/${sestraId}`}>Tvoj profil</Link>}
            text5="Odjavi se"/>
+           ):  <Navbar
+        text1={<Link to="/sviDoktori">Doktori</Link>}
+        text2={<Link to="/sveMedicinskeSestre">Medicinske sestre</Link>}
+        text3={<Link to="/sviPacijenti">Pacijenti</Link>}
+        text4={<Link to="/profilAdmin">Tvoj profil</Link>}
+        text5="Odjavi se"/>)}
             {pacijent.map((item, index) => (
                 <div className={styles.page} key={index}>
                     <div className={styles.info}>
@@ -112,9 +132,10 @@ export default function PacijentInfoPage(){
                             )}
                             
                         </ThemeProvider>
+                        {(uloga==='Administrator' || uloga==='Doktor') &&
                         <Link to={`/noviPregled/${pacijentId}`}>
                          <ContainedButton text={<AddIcon/>} module={styles.add}/>
-                         </Link>
+                         </Link>}
                     </div>
                     </div>
                     

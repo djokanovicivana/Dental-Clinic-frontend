@@ -1,4 +1,12 @@
-
+.box{
+    background-color: white;
+    border-radius: 20px;
+    width: 90vw;
+    margin:auto;
+    box-shadow: 10px 10px 14px -1px rgba(0, 0, 0, 0.75);
+        -webkit-box-shadow: 10px 10px 14px -1px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 10px 10px 14px -1px rgba(0, 0, 0, 0.75);
+}
  h1{
     text-align: center;
     color: #0077b6;

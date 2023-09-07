@@ -13,8 +13,10 @@ import { Select, MenuItem } from "@mui/material";
 import styles from "./PacijentTerminiPage.module.css";
 import ContainedButton from "../../components/ContainedButton/ContainedButton";
 import ModalPotvrda from "../../components/ModalPotvrda/ModalPotvrda";
+import { useParams } from "react-router-dom";
 export default function PacijentTerminiPage(){
-    const pacijentId=TokenServices.uzimanjeSesijeId();
+    const {pacijentId}=useParams();
+    const uloga=TokenServices.uzimanjeSesijeUloga();
       const [tabValue, setTabValue] = useState(0);
       const [usluge, setUsluge]=useState([]);
       const [obavljeniPregledi, setObavljeniPregledi]=useState([]);
@@ -61,11 +63,19 @@ export default function PacijentTerminiPage(){
 console.log(selectedUsluga);
     return(
         <>
-        <Navbar 
-           text2={<Link to="/zakazivanje">Zakaži termin</Link>}
-           text3={<Link to="/pacijentTermini">Tvoji termini</Link>} 
-           text4={<Link to="/pacijentProfil">Tvoj profil</Link>}
+        {uloga==='Administrator' ? (  <Navbar
+        text1={<Link to="/sviDoktori">Doktori</Link>}
+        text2={<Link to="/sveMedicinskeSestre">Medicinske sestre</Link>}
+        text3={<Link to="/sviPacijenti">Pacijenti</Link>}
+        text4={<Link to="/profilAdmin">Tvoj profil</Link>}
+        text5="Odjavi se"/>): (
+            <Navbar 
+           text2={<Link to={`/zakazivanje/${pacijentId}`}>Zakaži termin</Link>}
+           text3={<Link to={`/pacijentTermini/${pacijentId}`}>Tvoji termini</Link>} 
+           text4={<Link to={`/pacijentProfil/${pacijentId}`}>Tvoj profil</Link>}
            text5="Odjavi se"/>
+           )}
+       
             <ThemeProvider theme={theme}>
                             <Tabs value={tabValue} onChange={handleTabChange} variant="fullWidth" indicatorColor="primary" textColor="primary">
                                 <Tab label="Obavljeni pregledi"/>

@@ -17,6 +17,7 @@
     /* Stilovi za stavke menija */
     padding: 8px;
     cursor: pointer;
+    color:blue;
 }
 
 .menuItem:hover {
